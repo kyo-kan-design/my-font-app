@@ -12,7 +12,8 @@ import {
   Info,
   ShieldCheck,
   X,
-  ExternalLink
+  ExternalLink,
+  Twitter
 } from 'lucide-react';
 
 const GOOGLE_FONTS = [
@@ -67,12 +68,6 @@ export default function App() {
   const [showToast, setShowToast] = useState(false);
   const [modalType, setModalType] = useState(null); 
 
-  const sendGAEvent = (action, params) => {
-    if (window.gtag) {
-      window.gtag('event', action, params);
-    }
-  };
-
   useEffect(() => {
     const fontId = 'google-fonts-link';
     let link = document.getElementById(fontId);
@@ -87,28 +82,41 @@ export default function App() {
   }, []);
 
   const copyCSS = async () => {
-    sendGAEvent('copy_css', { heading_font: headingFont.name, body_font: bodyFont.name });
     const css = `/* 見出し */\nh1 {\n  font-family: ${headingFont.value};\n  font-weight: ${headingWeight};\n  font-size: ${headingSize}px;\n  color: ${headingColor};\n  letter-spacing: ${letterSpacing}em;\n}\n\n/* 本文 */\nbody {\n  font-family: ${bodyFont.value};\n  font-weight: ${bodyWeight};\n  font-size: ${bodySize}px;\n  color: ${bodyColor};\n  line-height: ${lineHeight};\n  letter-spacing: ${letterSpacing}em;\n}`;
-    try { await navigator.clipboard.writeText(css); } catch (err) { /* Fallback */ }
+    try { await navigator.clipboard.writeText(css); } catch (err) { /* fallback */ }
     setShowToast(true);
     setTimeout(() => setShowToast(false), 2000);
   };
 
   const randomize = () => {
-    sendGAEvent('shuffle_fonts', { action: 'click' });
     setHeadingFont(GOOGLE_FONTS[Math.floor(Math.random() * GOOGLE_FONTS.length)]);
     setBodyFont(GOOGLE_FONTS[Math.floor(Math.random() * GOOGLE_FONTS.length)]);
   };
 
   return (
     <div className="min-h-screen bg-[#f8fafc] text-slate-900 font-sans p-4 md:p-8 flex flex-col">
+      {/* Header Area */}
       <div className="max-w-7xl mx-auto w-full mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div>
-          <h1 className="text-3xl font-black tracking-tighter leading-none text-black">KumiFont</h1>
-          <p className="text-slate-500 text-[11px] font-medium mt-2">
-            produced by <a href="https://kyo-kan-design.com/" target="_blank" rel="noopener noreferrer" className="text-slate-700 font-bold hover:underline">共感デザイン研究所</a>
-          </p>
+        <div className="flex items-center gap-6">
+          <div>
+            <h1 className="text-3xl font-black tracking-tighter leading-none text-black">KumiFont</h1>
+            <p className="text-slate-500 text-[10px] font-medium mt-2">
+              produced by <a href="https://kyo-kan-design.com/" target="_blank" rel="noopener noreferrer" className="text-slate-700 font-bold hover:underline">共感デザイン研究所</a>
+            </p>
+          </div>
+          <div className="h-8 w-px bg-slate-200 hidden md:block"></div>
+          {/* X (Twitter) Link */}
+          <a 
+            href="https://x.com/kumifont" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-full text-xs font-bold hover:opacity-80 transition-all shadow-sm"
+          >
+            <Twitter className="w-3.5 h-3.5 fill-current" />
+            <span>Follow us</span>
+          </a>
         </div>
+
         <div className="flex bg-white p-1 rounded-xl shadow-sm border border-slate-200 w-fit">
           {[{ id: 'pc', icon: Monitor }, { id: 'mobile', icon: Smartphone }].map(({ id, icon: Icon }) => (
             <button key={id} onClick={() => setPreviewMode(id)} className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold transition-all ${previewMode === id ? 'text-white shadow-lg' : 'text-slate-400 hover:bg-slate-50'}`} style={{ backgroundColor: previewMode === id ? PRIMARY_COLOR : 'transparent' }}><Icon className="w-4 h-4" /><span>{VIEWPORT_SIZES[id].label}</span></button>
@@ -117,6 +125,7 @@ export default function App() {
       </div>
 
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-start flex-grow">
+        {/* Controls Column */}
         <div className="lg:col-span-4 space-y-6">
           <div className="bg-white p-7 rounded-2xl shadow-sm border border-slate-200">
             <div className="flex items-center gap-2 mb-4 border-b border-slate-100 pb-4">
@@ -162,6 +171,7 @@ export default function App() {
           </div>
         </div>
 
+        {/* Preview Column */}
         <div className="lg:col-span-8">
           <div className="lg:sticky lg:top-8 flex flex-col items-center">
             <div className="bg-white rounded-[2.5rem] shadow-2xl border border-slate-200 overflow-hidden transition-all duration-500 w-full" style={{ width: VIEWPORT_SIZES[previewMode].width, maxWidth: '100%' }}>
@@ -174,16 +184,20 @@ export default function App() {
         </div>
       </div>
 
+      {/* Footer Area */}
       <footer className="max-w-7xl mx-auto w-full mt-20 pt-12 pb-20 border-t border-slate-200">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           <div>
             <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-4">運営元：共感デザイン研究所</h3>
             <p className="text-sm text-slate-500 leading-relaxed mb-4">
-              KumiFont（クミフォント）は、<a href="https://kyo-kan-design.com/" target="_blank" rel="noopener noreferrer" className="text-slate-800 font-bold hover:underline inline-flex items-center gap-1">共感デザイン研究所<ExternalLink className="w-3 h-3" /></a>が開発・運営する、デザイナーのための和組みシミュレーターです。
+              KumiFont（クミフォント）は、<a href="https://kyo-kan-design.com/" target="_blank" rel="noopener noreferrer" className="text-slate-800 font-bold hover:underline inline-flex items-center gap-1">共感デザイン研究所<ExternalLink className="w-3 h-3" /></a>が開発・運営するツールです。
             </p>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              私たちは「共感」を軸にしたUI/UXデザインを通じて、ビジネスの課題解決を支援しています。現場でのフォント選定のストレスを軽減し、よりクリエイティブな時間を創出するためにこのツールを公開しました。
-            </p>
+            <div className="flex items-center gap-4 mt-4">
+              <a href="https://x.com/kumifont" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs font-black px-4 py-2 bg-slate-100 hover:bg-black hover:text-white rounded-lg transition-all">
+                <Twitter className="w-4 h-4" />
+                <span>最新情報をXでチェック</span>
+              </a>
+            </div>
           </div>
           <div className="flex flex-col gap-4">
             <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-2">Information</h3>
@@ -206,16 +220,11 @@ export default function App() {
               <article className="prose prose-slate">
                 <h2 className="text-2xl font-black mb-6">KumiFontについて</h2>
                 <p className="text-slate-600 mb-4">共感デザイン研究所が提供するKumiFontは、Web制作の現場で最も重要かつ時間の掛かる「和文フォントのペアリング」を支援します。</p>
-                <p className="text-slate-600 mb-4">商用利用可能なGoogle Fontsの中から、可読性と美しさを両立する組み合わせを自由に模索し、CSSコードとして即座に書き出すことが可能です。</p>
-                <h3 className="font-bold mt-6 mb-2">プロデュース</h3>
-                <p className="text-slate-600">共感デザイン研究所（https://kyo-kan-design.com/）</p>
               </article>
             ) : (
               <article className="prose prose-slate">
                 <h2 className="text-2xl font-black mb-6">プライバシーポリシー</h2>
-                <div className="text-slate-600 text-sm space-y-4">
-                  <p><strong>広告と解析について:</strong> 当サイトは、共感デザイン研究所が運営しています。利便性向上のためGoogleアナリティクスを使用し、継続的な運営のためにGoogleアドセンスによる広告表示を行っています。</p>
-                </div>
+                <p className="text-slate-600 text-sm">当サイトは、共感デザイン研究所が運営しています。詳細は公式サイトをご確認ください。</p>
               </article>
             )}
           </div>
