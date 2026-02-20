@@ -12,9 +12,15 @@ import {
   Info,
   ShieldCheck,
   X,
-  ExternalLink,
-  Twitter
+  ExternalLink
 } from 'lucide-react';
+
+// 最新のXロゴコンポーネント
+const XIcon = ({ className }) => (
+  <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="currentColor">
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+  </svg>
+);
 
 const GOOGLE_FONTS = [
   { name: 'Noto Sans JP', value: "'Noto Sans JP', sans-serif" },
@@ -31,7 +37,7 @@ const PRESET_TEXTS = [
   {
     title: "サービス紹介",
     heading: "デザインの力で、ビジネスを加速させる。",
-    body: "私たちは、ユーザー体験を第一に考えたUI/UXデザインを提供します。最新の技術と深い洞察に基づき、あなたのビジネスが直面する課題を解決へと導きます。まずは気軽にご相談ください。"
+    body: "私たちは、ユーザー体験を第一に考えたUI/UXデザインを提供します。最新の技術と深い洞察に基づき, あなたのビジネスが直面する課題を解決へと導きます。まずは気軽にご相談ください。"
   },
   {
     title: "ニュース記事",
@@ -112,7 +118,7 @@ export default function App() {
             rel="noopener noreferrer"
             className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-full text-xs font-bold hover:opacity-80 transition-all shadow-sm"
           >
-            <Twitter className="w-3.5 h-3.5 fill-current" />
+            <XIcon className="w-3.5 h-3.5" />
             <span>Follow us</span>
           </a>
         </div>
@@ -187,26 +193,32 @@ export default function App() {
       {/* Footer Area */}
       <footer className="max-w-7xl mx-auto w-full mt-20 pt-12 pb-20 border-t border-slate-200">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div>
-            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-4">運営元：共感デザイン研究所</h3>
-            <p className="text-sm text-slate-500 leading-relaxed mb-4">
-              KumiFont（クミフォント）は、<a href="https://kyo-kan-design.com/" target="_blank" rel="noopener noreferrer" className="text-slate-800 font-bold hover:underline inline-flex items-center gap-1">共感デザイン研究所<ExternalLink className="w-3 h-3" /></a>が開発・運営するツールです。
-            </p>
-            <div className="flex items-center gap-4 mt-4">
-              <a href="https://x.com/kumifont" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs font-black px-4 py-2 bg-slate-100 hover:bg-black hover:text-white rounded-lg transition-all">
-                <Twitter className="w-4 h-4" />
+          {/* Left Column: Description & Copyright */}
+          <div className="flex flex-col justify-between">
+            <div>
+              <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-4">KumiFont</h3>
+              <p className="text-sm text-slate-500 leading-relaxed mb-8">
+                KumiFont（クミフォント）は、Webデザイナーが日本語フォントの最適な「組み合わせ（和組み）」を直感的にシミュレーションするためのツールです。Google Fontsで提供されている高品質なフォントを厳選し、実際の実装に近い形でプレビューできます。
+              </p>
+            </div>
+            <p className="text-[10px] text-slate-400">© 2026 共感デザイン研究所 (Kyo-kan Design Inc.)</p>
+          </div>
+
+          {/* Right Column: Info & X Link */}
+          <div className="flex flex-col gap-4">
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-2">Information</h3>
+            <div className="flex flex-wrap gap-4 mb-4">
+              <button onClick={() => setModalType('about')} className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"><Info className="w-4 h-4" /> KumiFontについて</button>
+              <button onClick={() => setModalType('privacy')} className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"><ShieldCheck className="w-4 h-4" /> プライバシーポリシー</button>
+              <a href="https://kyo-kan-design.com/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"><ExternalLink className="w-4 h-4" /> 運営会社</a>
+            </div>
+            
+            <div className="flex items-center gap-4">
+              <a href="https://x.com/kumifont" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs font-black px-5 py-2.5 bg-slate-100 hover:bg-black hover:text-white rounded-lg transition-all">
+                <XIcon className="w-4 h-4" />
                 <span>最新情報をXでチェック</span>
               </a>
             </div>
-          </div>
-          <div className="flex flex-col gap-4">
-            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-2">Information</h3>
-            <div className="flex flex-wrap gap-4">
-              <button onClick={() => setModalType('about')} className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"><Info className="w-4 h-4" /> ツール詳細</button>
-              <button onClick={() => setModalType('privacy')} className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"><ShieldCheck className="w-4 h-4" /> プライバシーポリシー</button>
-              <a href="https://kyo-kan-design.com/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"><ExternalLink className="w-4 h-4" /> 公式サイト</a>
-            </div>
-            <p className="text-[10px] text-slate-400 mt-4">© 2026 共感デザイン研究所 (Kyo-kan Design Inc.)</p>
           </div>
         </div>
       </footer>
