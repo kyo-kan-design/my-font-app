@@ -12,10 +12,13 @@ import {
   Info,
   ShieldCheck,
   X,
-  ExternalLink
+  ExternalLink,
+  BookOpen,
+  MousePointer2,
+  Zap
 } from 'lucide-react';
 
-// 最新のXロゴコンポーネント
+// 最新の𝕏ロゴコンポーネント
 const XIcon = ({ className }) => (
   <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="currentColor">
     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
@@ -102,22 +105,16 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#f8fafc] text-slate-900 font-sans p-4 md:p-8 flex flex-col">
       {/* Header Area */}
-      <div className="max-w-7xl mx-auto w-full mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <header className="max-w-7xl mx-auto w-full mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="flex items-center gap-6">
           <div>
             <h1 className="text-3xl font-black tracking-tighter leading-none text-black">KumiFont</h1>
-            <p className="text-slate-500 text-[10px] font-medium mt-2">
+            <p className="text-slate-500 text-[10px] font-medium mt-2 uppercase tracking-tighter">
               produced by <a href="https://kyo-kan-design.com/" target="_blank" rel="noopener noreferrer" className="text-slate-700 font-bold hover:underline">共感デザイン研究所</a>
             </p>
           </div>
           <div className="h-8 w-px bg-slate-200 hidden md:block"></div>
-          {/* X (Twitter) Link */}
-          <a 
-            href="https://x.com/kumifont" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-full text-xs font-bold hover:opacity-80 transition-all shadow-sm"
-          >
+          <a href="https://x.com/kumifont" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-full text-xs font-bold hover:opacity-80 transition-all shadow-sm">
             <XIcon className="w-3.5 h-3.5" />
             <span>Follow us</span>
           </a>
@@ -128,9 +125,9 @@ export default function App() {
             <button key={id} onClick={() => setPreviewMode(id)} className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold transition-all ${previewMode === id ? 'text-white shadow-lg' : 'text-slate-400 hover:bg-slate-50'}`} style={{ backgroundColor: previewMode === id ? PRIMARY_COLOR : 'transparent' }}><Icon className="w-4 h-4" /><span>{VIEWPORT_SIZES[id].label}</span></button>
           ))}
         </div>
-      </div>
+      </header>
 
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-start flex-grow">
+      <main className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-24">
         {/* Controls Column */}
         <div className="lg:col-span-4 space-y-6">
           <div className="bg-white p-7 rounded-2xl shadow-sm border border-slate-200">
@@ -188,12 +185,84 @@ export default function App() {
             </div>
           </div>
         </div>
-      </div>
+      </main>
+
+      {/* Valuable Content Section (For AdSense) */}
+      <section className="max-w-4xl mx-auto w-full mb-24 space-y-20 px-4">
+        <div className="text-center">
+          <h2 className="text-3xl font-black tracking-tight mb-4">KumiFontが、Webデザインの「和組み」を変える。</h2>
+          <div className="h-1.5 w-20 bg-slate-200 mx-auto rounded-full" style={{ backgroundColor: PRIMARY_COLOR }}></div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
+          <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
+            <Zap className="w-6 h-6 mb-4" style={{ color: PRIMARY_COLOR }} />
+            <h3 className="font-black text-lg mb-3">1秒でシミュレート</h3>
+            <p className="text-slate-500 leading-relaxed">FigmaやPhotoshopを立ち上げる必要はありません。ブラウザ上でフォントの組み合わせを即座に検証し、最適な「和組み」を見つけ出します。</p>
+          </div>
+          <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
+            <MousePointer2 className="w-6 h-6 mb-4" style={{ color: PRIMARY_COLOR }} />
+            <h3 className="font-black text-lg mb-3">デザイナーの直感に寄り添う</h3>
+            <p className="text-slate-500 leading-relaxed">UXデザイナーとしての20年の経験を活かし、制作現場で最も「面倒」だと感じていたプロセスを自動化。思考を止めずにデザインに没頭できます。</p>
+          </div>
+          <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
+            <BookOpen className="w-6 h-6 mb-4" style={{ color: PRIMARY_COLOR }} />
+            <h3 className="font-black text-lg mb-3">実務に即したコード出力</h3>
+            <p className="text-slate-500 leading-relaxed">シミュレーションして終わりではありません。ウェイトや行間、字間などの数値をCSSとしてワンクリックでコピーし、そのまま実装へ繋げられます。</p>
+          </div>
+        </div>
+
+        <article className="prose prose-slate max-w-none bg-white p-10 md:p-16 rounded-[3rem] shadow-sm border border-slate-100">
+          <div className="max-w-3xl mx-auto text-slate-600 leading-loose">
+            <h2 className="text-2xl font-black mb-8 text-slate-900">日本語タイポグラフィの「共感」をデザインする</h2>
+            
+            <p className="mb-6 text-lg font-medium text-slate-800">
+              なぜ、同じNoto Sansを使っていても、サイトによって受ける印象が異なるのでしょうか？
+            </p>
+            <p className="mb-6">
+              その答えは「組み合わせ（和組み）」にあります。見出しに力強いゴシック体を選び、本文に繊細な明朝体を合わせる。あるいは、その逆。日本語は、ひらがな・カタカナ・漢字という異なる要素が混ざり合う、世界でも稀な美しい言語です。
+            </p>
+            <p className="mb-12">
+              KumiFontは、Google Fontsという素晴らしいアセットを最大限に活かし、デザイナーがその「言語の美しさ」を最大限に引き出すためのキャンバスとして開発されました。
+            </p>
+
+            <div className="mt-16 pt-12 border-t border-slate-100">
+              <h3 className="text-xl font-black mb-8 text-slate-900 flex items-center gap-2">
+                <span className="w-1.5 h-6 rounded-full" style={{ backgroundColor: PRIMARY_COLOR }}></span>
+                美しい和組みの3つのポイント
+              </h3>
+              <ul className="space-y-8 text-base list-none p-0">
+                <li className="flex gap-4">
+                  <span className="font-black text-lg shrink-0" style={{ color: PRIMARY_COLOR }}>01</span>
+                  <div>
+                    <strong className="text-slate-900 block mb-1">コントラストを意識する</strong>
+                    <span className="text-slate-500">見出しと本文でウェイト（太さ）の差を明確にすることで、情報の優先順位が伝わりやすくなります。</span>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <span className="font-black text-lg shrink-0" style={{ color: PRIMARY_COLOR }}>02</span>
+                  <div>
+                    <strong className="text-slate-900 block mb-1">余白（行間）で呼吸させる</strong>
+                    <span className="text-slate-500">日本語は四角い文字が多いため、行間を1.7〜1.9程度に広く取ることで、読者の視線がスムーズに流れます。</span>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <span className="font-black text-lg shrink-0" style={{ color: PRIMARY_COLOR }}>03</span>
+                  <div>
+                    <strong className="text-slate-900 block mb-1">字間で温度感を変える</strong>
+                    <span className="text-slate-500">高級感を出したい時は広く、信頼感を出したい時はやや詰める。KumiFontのスライダーでその「温度差」を体感してください。</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </article>
+      </section>
 
       {/* Footer Area */}
-      <footer className="max-w-7xl mx-auto w-full mt-20 pt-12 pb-20 border-t border-slate-200">
+      <footer className="max-w-7xl mx-auto w-full pt-12 pb-20 border-t border-slate-200">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          {/* Left Column: Description & Copyright */}
+          {/* Left Column */}
           <div className="flex flex-col justify-between">
             <div>
               <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-4">KumiFont</h3>
@@ -204,19 +273,20 @@ export default function App() {
             <p className="text-[10px] text-slate-400">© 2026 共感デザイン研究所 (Kyo-kan Design Inc.)</p>
           </div>
 
-          {/* Right Column: Info & X Link */}
-          <div className="flex flex-col gap-4">
-            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-2">Information</h3>
-            <div className="flex flex-wrap gap-4 mb-4">
-              <button onClick={() => setModalType('about')} className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"><Info className="w-4 h-4" /> KumiFontについて</button>
-              <button onClick={() => setModalType('privacy')} className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"><ShieldCheck className="w-4 h-4" /> プライバシーポリシー</button>
-              <a href="https://kyo-kan-design.com/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"><ExternalLink className="w-4 h-4" /> 運営会社</a>
+          {/* Right Column */}
+          <div className="flex flex-col gap-6">
+            <div>
+              <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-4">Information</h3>
+              <nav className="flex flex-wrap gap-4">
+                <button onClick={() => setModalType('about')} className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"><Info className="w-4 h-4" /> KumiFontについて</button>
+                <button onClick={() => setModalType('privacy')} className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"><ShieldCheck className="w-4 h-4" /> プライバシーポリシー</button>
+                <a href="https://kyo-kan-design.com/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"><ExternalLink className="w-4 h-4" /> 運営元</a>
+              </nav>
             </div>
-            
             <div className="flex items-center gap-4">
               <a href="https://x.com/kumifont" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs font-black px-5 py-2.5 bg-slate-100 hover:bg-black hover:text-white rounded-lg transition-all">
                 <XIcon className="w-4 h-4" />
-                <span>最新情報をXでチェック</span>
+                <span>最新情報を𝕏でチェック</span>
               </a>
             </div>
           </div>
@@ -237,6 +307,10 @@ export default function App() {
               <article className="prose prose-slate">
                 <h2 className="text-2xl font-black mb-6">プライバシーポリシー</h2>
                 <p className="text-slate-600 text-sm">当サイトは、共感デザイン研究所が運営しています。詳細は公式サイトをご確認ください。</p>
+                <div className="mt-8 space-y-4 text-xs text-slate-500">
+                  <p><strong>広告の配信について</strong>：当サイトでは、第三者配信の広告サービス（Googleアドセンス）を利用することがあります。</p>
+                  <p><strong>アクセス解析について</strong>：当サイトでは、Googleアナリティクスを利用してアクセス情報を収集しています。</p>
+                </div>
               </article>
             )}
           </div>
