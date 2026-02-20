@@ -40,10 +40,7 @@ const VIEWPORT_SIZES = {
   pc: { width: '100%', label: 'PC' }
 };
 
-// 新しいメインカラー: 彩度低めで明るめの青 (#6B8EAD)
-// 落ち着きがありつつ、画面が暗くなりすぎないトーンです。
 const PRIMARY_COLOR = '#6B8EAD'; 
-const PRIMARY_HOVER = '#567691';
 
 export default function App() {
   const [headingFont, setHeadingFont] = useState(GOOGLE_FONTS[1]);
@@ -65,22 +62,33 @@ export default function App() {
 
   const [showToast, setShowToast] = useState(false);
 
+  // GA4 へのイベント送信
+  const sendGAEvent = (action, params) => {
+    if (window.gtag) {
+      window.gtag('event', action, params);
+    }
+  };
+
   useEffect(() => {
     const fontId = 'google-fonts-link';
     let link = document.getElementById(fontId);
-    
     if (!link) {
       link = document.createElement('link');
       link.id = fontId;
       link.rel = 'stylesheet';
       document.head.appendChild(link);
     }
-
     const fontFamilies = GOOGLE_FONTS.map(f => `family=${f.name.replace(/ /g, '+')}:wght@300;400;500;700;900`).join('&');
     link.href = `https://fonts.googleapis.com/css2?${fontFamilies}&display=swap`;
   }, []);
 
   const copyCSS = async () => {
+    // 解析イベント：コピー
+    sendGAEvent('copy_css', {
+      heading_font: headingFont.name,
+      body_font: bodyFont.name
+    });
+
     const css = `/* 見出し */
 h1 {
   font-family: ${headingFont.value};
@@ -116,6 +124,8 @@ body {
   };
 
   const randomize = () => {
+    // 解析イベント：シャッフル
+    sendGAEvent('shuffle_fonts', { action: 'click' });
     setHeadingFont(GOOGLE_FONTS[Math.floor(Math.random() * GOOGLE_FONTS.length)]);
     setBodyFont(GOOGLE_FONTS[Math.floor(Math.random() * GOOGLE_FONTS.length)]);
   };
@@ -128,7 +138,6 @@ body {
 
   return (
     <div className="min-h-screen bg-[#f8fafc] text-slate-900 font-sans p-4 md:p-8">
-      {/* Header Area */}
       <div className="max-w-7xl mx-auto mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
           <h1 className="text-3xl font-black tracking-tighter leading-none text-black">
@@ -162,7 +171,6 @@ body {
       </div>
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Controls Column (Left) */}
         <div className="lg:col-span-4 space-y-6">
           <div className="bg-white p-7 rounded-2xl shadow-sm border border-slate-200">
             <div className="flex items-center gap-2 mb-4 border-b border-slate-100 pb-4">
@@ -211,7 +219,6 @@ body {
             </div>
           </div>
 
-          {/* Typography Settings */}
           <div className="bg-white p-7 rounded-2xl shadow-sm border border-slate-200">
             <div className="flex items-center gap-2 mb-6 border-b border-slate-100 pb-4">
               <Settings2 className="w-5 h-5" style={{ color: PRIMARY_COLOR }} />
@@ -244,7 +251,6 @@ body {
                 </section>
               </div>
 
-              {/* Weight Controls */}
               <div className="pt-4 border-t border-slate-50 space-y-4">
                 <div className="flex items-center gap-2 mb-2">
                   <Bold className="w-4 h-4 text-slate-400" />
@@ -262,7 +268,6 @@ body {
                 </div>
               </div>
 
-              {/* Color Controls */}
               <div className="pt-4 border-t border-slate-50 space-y-4">
                 <div className="flex items-center gap-2 mb-2">
                   <Palette className="w-4 h-4 text-slate-400" />
@@ -280,7 +285,6 @@ body {
                 </div>
               </div>
 
-              {/* Slider Controls */}
               <div className="pt-4 border-t border-slate-50 space-y-5">
                 <div className="space-y-5">
                   <div>
@@ -319,7 +323,6 @@ body {
               </div>
             </div>
 
-            {/* Action Buttons */}
             <div className="flex flex-col gap-3 pt-8 mt-6 border-t border-slate-100">
               <button 
                 onClick={randomize}
@@ -338,7 +341,6 @@ body {
           </div>
         </div>
 
-        {/* Preview Column (Right) - Sticky追従 */}
         <div className="lg:col-span-8">
           <div className="lg:sticky lg:top-8 flex justify-center">
             <div 
@@ -352,7 +354,6 @@ body {
                 </div>
               )}
 
-              {/* Main Preview Canvas */}
               <div className="p-8 md:p-16 min-h-[600px] flex flex-col justify-center relative bg-white transition-all text-center md:text-left">
                 <div className="relative z-10">
                   <h1 
