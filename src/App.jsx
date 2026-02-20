@@ -11,7 +11,8 @@ import {
   Edit3,
   Info,
   ShieldCheck,
-  X
+  X,
+  ExternalLink
 } from 'lucide-react';
 
 const GOOGLE_FONTS = [
@@ -64,7 +65,7 @@ export default function App() {
   const [activePreset, setActivePreset] = useState(PRESET_TEXTS[0].title);
 
   const [showToast, setShowToast] = useState(false);
-  const [modalType, setModalType] = useState(null); // 'about' or 'privacy'
+  const [modalType, setModalType] = useState(null); 
 
   const sendGAEvent = (action, params) => {
     if (window.gtag) {
@@ -104,7 +105,9 @@ export default function App() {
       <div className="max-w-7xl mx-auto w-full mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
           <h1 className="text-3xl font-black tracking-tighter leading-none text-black">KumiFont</h1>
-          <p className="text-slate-500 text-[11px] font-medium mt-2">日本語フォントの最適な組み合わせをデザインする</p>
+          <p className="text-slate-500 text-[11px] font-medium mt-2">
+            produced by <a href="https://kyo-kan-design.com/" target="_blank" rel="noopener noreferrer" className="text-slate-700 font-bold hover:underline">共感デザイン研究所</a>
+          </p>
         </div>
         <div className="flex bg-white p-1 rounded-xl shadow-sm border border-slate-200 w-fit">
           {[{ id: 'pc', icon: Monitor }, { id: 'mobile', icon: Smartphone }].map(({ id, icon: Icon }) => (
@@ -171,22 +174,25 @@ export default function App() {
         </div>
       </div>
 
-      {/* Footer Area for AdSense/SEO */}
       <footer className="max-w-7xl mx-auto w-full mt-20 pt-12 pb-20 border-t border-slate-200">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           <div>
-            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-4">About KumiFont</h3>
-            <p className="text-sm text-slate-500 leading-relaxed">
-              KumiFont（クミフォント）は、Webデザイナーが日本語フォントの最適な「組み合わせ（和組み）」を直感的にシミュレーションするためのツールです。Google Fontsで提供されている高品質なフォントを厳選し、実際の実装に近い形でプレビューできます。
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-4">運営元：共感デザイン研究所</h3>
+            <p className="text-sm text-slate-500 leading-relaxed mb-4">
+              KumiFont（クミフォント）は、<a href="https://kyo-kan-design.com/" target="_blank" rel="noopener noreferrer" className="text-slate-800 font-bold hover:underline inline-flex items-center gap-1">共感デザイン研究所<ExternalLink className="w-3 h-3" /></a>が開発・運営する、デザイナーのための和組みシミュレーターです。
+            </p>
+            <p className="text-xs text-slate-400 leading-relaxed">
+              私たちは「共感」を軸にしたUI/UXデザインを通じて、ビジネスの課題解決を支援しています。現場でのフォント選定のストレスを軽減し、よりクリエイティブな時間を創出するためにこのツールを公開しました。
             </p>
           </div>
           <div className="flex flex-col gap-4">
             <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-2">Information</h3>
             <div className="flex flex-wrap gap-4">
-              <button onClick={() => setModalType('about')} className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"><Info className="w-4 h-4" /> このツールについて</button>
+              <button onClick={() => setModalType('about')} className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"><Info className="w-4 h-4" /> ツール詳細</button>
               <button onClick={() => setModalType('privacy')} className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"><ShieldCheck className="w-4 h-4" /> プライバシーポリシー</button>
+              <a href="https://kyo-kan-design.com/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"><ExternalLink className="w-4 h-4" /> 公式サイト</a>
             </div>
-            <p className="text-[10px] text-slate-400 mt-4">© 2026 KumiFont. Designed by Kyo-kan Design.</p>
+            <p className="text-[10px] text-slate-400 mt-4">© 2026 共感デザイン研究所 (Kyo-kan Design Inc.)</p>
           </div>
         </div>
       </footer>
@@ -199,20 +205,16 @@ export default function App() {
             {modalType === 'about' ? (
               <article className="prose prose-slate">
                 <h2 className="text-2xl font-black mb-6">KumiFontについて</h2>
-                <p className="text-slate-600 mb-4">Webサイト制作において、フォントの選定はブランドの印象を決定づける重要な要素です。しかし、日本語フォントはウェイトや明朝・ゴシックの組み合わせによって可読性が大きく変わります。</p>
-                <p className="text-slate-600 mb-4">KumiFontは、現場のデザイナーが「サクッと」最適なペアリングを見つけ、そのままCSSをコピーして開発に活かせるよう設計されています。</p>
-                <h3 className="font-bold mt-6 mb-2">対応フォント一覧</h3>
-                <div className="flex flex-wrap gap-2">
-                  {GOOGLE_FONTS.map(f => <span key={f.name} className="px-3 py-1 bg-slate-100 rounded-full text-[10px] font-bold text-slate-500">{f.name}</span>)}
-                </div>
+                <p className="text-slate-600 mb-4">共感デザイン研究所が提供するKumiFontは、Web制作の現場で最も重要かつ時間の掛かる「和文フォントのペアリング」を支援します。</p>
+                <p className="text-slate-600 mb-4">商用利用可能なGoogle Fontsの中から、可読性と美しさを両立する組み合わせを自由に模索し、CSSコードとして即座に書き出すことが可能です。</p>
+                <h3 className="font-bold mt-6 mb-2">プロデュース</h3>
+                <p className="text-slate-600">共感デザイン研究所（https://kyo-kan-design.com/）</p>
               </article>
             ) : (
               <article className="prose prose-slate">
                 <h2 className="text-2xl font-black mb-6">プライバシーポリシー</h2>
                 <div className="text-slate-600 text-sm space-y-4">
-                  <p><strong>広告の配信について:</strong> 当サイトでは、第三者配信の広告サービス（Googleアドセンス）を利用しています。Cookieを使用することで、お客様の過去のアクセス情報に基づいた適切な広告を表示します。</p>
-                  <p><strong>アクセス解析ツールについて:</strong> 当サイトでは、Googleによるアクセス解析ツール「Googleアナリティクス」を利用しています。トラフィックデータは匿名で収集されており、個人を特定するものではありません。</p>
-                  <p><strong>免責事項:</strong> 当サイトのシミュレーション結果により生じたトラブルや損失、損害等につきましては、一切責任を負いかねます。最終的なフォント選定は自己責任でお願いいたします。</p>
+                  <p><strong>広告と解析について:</strong> 当サイトは、共感デザイン研究所が運営しています。利便性向上のためGoogleアナリティクスを使用し、継続的な運営のためにGoogleアドセンスによる広告表示を行っています。</p>
                 </div>
               </article>
             )}
