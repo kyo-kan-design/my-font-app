@@ -8,7 +8,10 @@ import {
   Monitor, 
   Palette,
   Bold, 
-  Edit3
+  Edit3,
+  Info,
+  ShieldCheck,
+  X
 } from 'lucide-react';
 
 const GOOGLE_FONTS = [
@@ -61,8 +64,8 @@ export default function App() {
   const [activePreset, setActivePreset] = useState(PRESET_TEXTS[0].title);
 
   const [showToast, setShowToast] = useState(false);
+  const [modalType, setModalType] = useState(null); // 'about' or 'privacy'
 
-  // GA4 へのイベント送信
   const sendGAEvent = (action, params) => {
     if (window.gtag) {
       window.gtag('event', action, params);
@@ -83,94 +86,34 @@ export default function App() {
   }, []);
 
   const copyCSS = async () => {
-    // 解析イベント：コピー
-    sendGAEvent('copy_css', {
-      heading_font: headingFont.name,
-      body_font: bodyFont.name
-    });
-
-    const css = `/* 見出し */
-h1 {
-  font-family: ${headingFont.value};
-  font-weight: ${headingWeight};
-  font-size: ${headingSize}px;
-  color: ${headingColor};
-  letter-spacing: ${letterSpacing}em;
-}
-
-/* 本文 */
-body {
-  font-family: ${bodyFont.value};
-  font-weight: ${bodyWeight};
-  font-size: ${bodySize}px;
-  color: ${bodyColor};
-  line-height: ${lineHeight};
-  letter-spacing: ${letterSpacing}em;
-}`;
-    
-    try {
-      await navigator.clipboard.writeText(css);
-    } catch (err) {
-      const textArea = document.createElement("textarea");
-      textArea.value = css;
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textArea);
-    }
-    
+    sendGAEvent('copy_css', { heading_font: headingFont.name, body_font: bodyFont.name });
+    const css = `/* 見出し */\nh1 {\n  font-family: ${headingFont.value};\n  font-weight: ${headingWeight};\n  font-size: ${headingSize}px;\n  color: ${headingColor};\n  letter-spacing: ${letterSpacing}em;\n}\n\n/* 本文 */\nbody {\n  font-family: ${bodyFont.value};\n  font-weight: ${bodyWeight};\n  font-size: ${bodySize}px;\n  color: ${bodyColor};\n  line-height: ${lineHeight};\n  letter-spacing: ${letterSpacing}em;\n}`;
+    try { await navigator.clipboard.writeText(css); } catch (err) { /* Fallback */ }
     setShowToast(true);
     setTimeout(() => setShowToast(false), 2000);
   };
 
   const randomize = () => {
-    // 解析イベント：シャッフル
     sendGAEvent('shuffle_fonts', { action: 'click' });
     setHeadingFont(GOOGLE_FONTS[Math.floor(Math.random() * GOOGLE_FONTS.length)]);
     setBodyFont(GOOGLE_FONTS[Math.floor(Math.random() * GOOGLE_FONTS.length)]);
   };
 
-  const applyPreset = (preset) => {
-    setHeadingText(preset.heading);
-    setBodyText(preset.body);
-    setActivePreset(preset.title);
-  };
-
   return (
-    <div className="min-h-screen bg-[#f8fafc] text-slate-900 font-sans p-4 md:p-8">
-      <div className="max-w-7xl mx-auto mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
+    <div className="min-h-screen bg-[#f8fafc] text-slate-900 font-sans p-4 md:p-8 flex flex-col">
+      <div className="max-w-7xl mx-auto w-full mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h1 className="text-3xl font-black tracking-tighter leading-none text-black">
-            KumiFont
-          </h1>
-          <p className="text-slate-500 text-[11px] font-medium mt-2">
-            日本語フォントの最適な組み合わせをデザインする
-          </p>
+          <h1 className="text-3xl font-black tracking-tighter leading-none text-black">KumiFont</h1>
+          <p className="text-slate-500 text-[11px] font-medium mt-2">日本語フォントの最適な組み合わせをデザインする</p>
         </div>
-
         <div className="flex bg-white p-1 rounded-xl shadow-sm border border-slate-200 w-fit">
-          {[
-            { id: 'pc', icon: Monitor },
-            { id: 'mobile', icon: Smartphone }
-          ].map(({ id, icon: Icon }) => (
-            <button
-              key={id}
-              onClick={() => setPreviewMode(id)}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold transition-all ${
-                previewMode === id 
-                ? 'text-white shadow-lg' 
-                : 'text-slate-400 hover:bg-slate-50'
-              }`}
-              style={{ backgroundColor: previewMode === id ? PRIMARY_COLOR : 'transparent' }}
-            >
-              <Icon className="w-4 h-4" />
-              <span>{VIEWPORT_SIZES[id].label}</span>
-            </button>
+          {[{ id: 'pc', icon: Monitor }, { id: 'mobile', icon: Smartphone }].map(({ id, icon: Icon }) => (
+            <button key={id} onClick={() => setPreviewMode(id)} className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold transition-all ${previewMode === id ? 'text-white shadow-lg' : 'text-slate-400 hover:bg-slate-50'}`} style={{ backgroundColor: previewMode === id ? PRIMARY_COLOR : 'transparent' }}><Icon className="w-4 h-4" /><span>{VIEWPORT_SIZES[id].label}</span></button>
           ))}
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-start flex-grow">
         <div className="lg:col-span-4 space-y-6">
           <div className="bg-white p-7 rounded-2xl shadow-sm border border-slate-200">
             <div className="flex items-center gap-2 mb-4 border-b border-slate-100 pb-4">
@@ -178,43 +121,16 @@ body {
               <h2 className="text-lg font-bold">テキスト編集</h2>
             </div>
             <div className="space-y-4">
-              <section>
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block">見出し</label>
-                <input 
-                  type="text"
-                  value={headingText}
-                  onChange={(e) => setHeadingText(e.target.value)}
-                  className="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 transition-all"
-                  style={{ '--tw-ring-color': PRIMARY_COLOR }}
-                />
+              <section><label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block">見出し</label>
+                <input type="text" value={headingText} onChange={(e) => setHeadingText(e.target.value)} className="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 transition-all" style={{ '--tw-ring-color': PRIMARY_COLOR }} />
               </section>
-              <section>
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block">本文</label>
-                <textarea 
-                  rows="4"
-                  value={bodyText}
-                  onChange={(e) => setBodyText(e.target.value)}
-                  className="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 transition-all resize-none"
-                  style={{ '--tw-ring-color': PRIMARY_COLOR }}
-                />
+              <section><label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block">本文</label>
+                <textarea rows="4" value={bodyText} onChange={(e) => setBodyText(e.target.value)} className="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 transition-all resize-none" style={{ '--tw-ring-color': PRIMARY_COLOR }} />
               </section>
-              <div className="pt-2">
-                <div className="grid grid-cols-2 gap-2">
-                  {PRESET_TEXTS.map((t, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => applyPreset(t)}
-                      className={`py-2 text-xs rounded-lg border transition-all ${
-                        activePreset === t.title 
-                        ? 'text-white font-bold border-transparent' 
-                        : 'bg-white border-slate-200 text-slate-400 hover:border-slate-300'
-                      }`}
-                      style={{ backgroundColor: activePreset === t.title ? PRIMARY_COLOR : '' }}
-                    >
-                      {t.title}
-                    </button>
-                  ))}
-                </div>
+              <div className="grid grid-cols-2 gap-2">
+                {PRESET_TEXTS.map((t, idx) => (
+                  <button key={idx} onClick={() => { setHeadingText(t.heading); setBodyText(t.body); setActivePreset(t.title); }} className={`py-2 text-xs rounded-lg border transition-all ${activePreset === t.title ? 'text-white font-bold border-transparent' : 'bg-white border-slate-200 text-slate-400 hover:border-slate-300'}`} style={{ backgroundColor: activePreset === t.title ? PRIMARY_COLOR : '' }}>{t.title}</button>
+                ))}
               </div>
             </div>
           </div>
@@ -224,174 +140,89 @@ body {
               <Settings2 className="w-5 h-5" style={{ color: PRIMARY_COLOR }} />
               <h2 className="text-lg font-bold">タイポグラフィ</h2>
             </div>
-
             <div className="space-y-6">
-              <div className="grid grid-cols-1 gap-4">
-                <section>
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block">見出しフォント</label>
-                  <select 
-                    className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2"
-                    style={{ '--tw-ring-color': PRIMARY_COLOR }}
-                    value={headingFont.name}
-                    onChange={(e) => setHeadingFont(GOOGLE_FONTS.find(f => f.name === e.target.value))}
-                  >
-                    {GOOGLE_FONTS.map(f => <option key={f.name} value={f.name}>{f.name}</option>)}
-                  </select>
-                </section>
-                <section>
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block">本文フォント</label>
-                  <select 
-                    className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2"
-                    style={{ '--tw-ring-color': PRIMARY_COLOR }}
-                    value={bodyFont.name}
-                    onChange={(e) => setBodyFont(GOOGLE_FONTS.find(f => f.name === e.target.value))}
-                  >
-                    {GOOGLE_FONTS.map(f => <option key={f.name} value={f.name}>{f.name}</option>)}
-                  </select>
-                </section>
+              <section><label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block">見出しフォント</label>
+                <select className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2" style={{ '--tw-ring-color': PRIMARY_COLOR }} value={headingFont.name} onChange={(e) => setHeadingFont(GOOGLE_FONTS.find(f => f.name === e.target.value))}>
+                  {GOOGLE_FONTS.map(f => <option key={f.name} value={f.name}>{f.name}</option>)}
+                </select>
+              </section>
+              <section><label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block">本文フォント</label>
+                <select className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2" style={{ '--tw-ring-color': PRIMARY_COLOR }} value={bodyFont.name} onChange={(e) => setBodyFont(GOOGLE_FONTS.find(f => f.name === e.target.value))}>
+                  {GOOGLE_FONTS.map(f => <option key={f.name} value={f.name}>{f.name}</option>)}
+                </select>
+              </section>
+              <div className="flex flex-col gap-3 pt-6 border-t border-slate-100">
+                <button onClick={randomize} className="flex items-center justify-center gap-2 w-full py-4 bg-slate-50 hover:bg-slate-100 text-slate-500 rounded-xl font-black transition-all border border-slate-200"><RefreshCcw className="w-4 h-4" /> シャッフル</button>
+                <button onClick={copyCSS} className="flex items-center justify-center gap-2 w-full py-4 text-white rounded-xl font-black transition-all shadow-xl active:scale-95" style={{ backgroundColor: PRIMARY_COLOR }}><Copy className="w-4 h-4" /> CSSをコピー</button>
               </div>
-
-              <div className="pt-4 border-t border-slate-50 space-y-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <Bold className="w-4 h-4 text-slate-400" />
-                  <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">ウェイト (太さ)</span>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-[10px] text-slate-400 block mb-1">見出し: {headingWeight}</label>
-                    <input type="range" min="300" max="900" step="100" value={headingWeight} onChange={(e) => setHeadingWeight(parseInt(e.target.value))} className="w-full" style={{ accentColor: PRIMARY_COLOR }} />
-                  </div>
-                  <div>
-                    <label className="text-[10px] text-slate-400 block mb-1">本文: {bodyWeight}</label>
-                    <input type="range" min="300" max="900" step="100" value={bodyWeight} onChange={(e) => setBodyWeight(parseInt(e.target.value))} className="w-full" style={{ accentColor: PRIMARY_COLOR }} />
-                  </div>
-                </div>
-              </div>
-
-              <div className="pt-4 border-t border-slate-50 space-y-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <Palette className="w-4 h-4 text-slate-400" />
-                  <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">カラー</span>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="flex items-center gap-2 p-2.5 bg-slate-50 rounded-lg border border-slate-200">
-                    <input type="color" value={headingColor} onChange={(e) => setHeadingColor(e.target.value)} className="w-8 h-8 rounded cursor-pointer bg-transparent border-none" />
-                    <span className="text-[10px] font-mono">{headingColor.toUpperCase()}</span>
-                  </div>
-                  <div className="flex items-center gap-2 p-2.5 bg-slate-50 rounded-lg border border-slate-200">
-                    <input type="color" value={bodyColor} onChange={(e) => setBodyColor(e.target.value)} className="w-8 h-8 rounded cursor-pointer bg-transparent border-none" />
-                    <span className="text-[10px] font-mono">{bodyColor.toUpperCase()}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="pt-4 border-t border-slate-50 space-y-5">
-                <div className="space-y-5">
-                  <div>
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Heading Size</span>
-                      <span className="text-[10px] font-mono" style={{ color: PRIMARY_COLOR }}>{headingSize}px</span>
-                    </div>
-                    <input type="range" min="10" max="80" value={headingSize} onChange={(e) => setHeadingSize(e.target.value)} className="w-full" style={{ accentColor: PRIMARY_COLOR }} />
-                  </div>
-                  
-                  <div>
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Body Size</span>
-                      <span className="text-[10px] font-mono" style={{ color: PRIMARY_COLOR }}>{bodySize}px</span>
-                    </div>
-                    <input type="range" min="10" max="24" value={bodySize} onChange={(e) => setBodySize(e.target.value)} className="w-full" style={{ accentColor: PRIMARY_COLOR }} />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <div className="flex justify-between items-center mb-1">
-                        <span className="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Line</span>
-                        <span className="text-[10px] font-mono">{lineHeight}</span>
-                      </div>
-                      <input type="range" min="1.2" max="2.4" step="0.1" value={lineHeight} onChange={(e) => setLineHeight(e.target.value)} className="w-full" style={{ accentColor: PRIMARY_COLOR }} />
-                    </div>
-                    <div>
-                      <div className="flex justify-between items-center mb-1">
-                        <span className="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Letter</span>
-                        <span className="text-[10px] font-mono">{letterSpacing}</span>
-                      </div>
-                      <input type="range" min="-0.05" max="0.3" step="0.01" value={letterSpacing} onChange={(e) => setLetterSpacing(parseFloat(e.target.value))} className="w-full" style={{ accentColor: PRIMARY_COLOR }} />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-3 pt-8 mt-6 border-t border-slate-100">
-              <button 
-                onClick={randomize}
-                className="flex items-center justify-center gap-2 w-full py-4 bg-slate-50 hover:bg-slate-100 text-slate-500 rounded-xl font-black transition-all active:scale-95 border border-slate-200"
-              >
-                <RefreshCcw className="w-4 h-4" /> シャッフル
-              </button>
-              <button 
-                onClick={copyCSS}
-                className="flex items-center justify-center gap-2 w-full py-4 text-white rounded-xl font-black transition-all shadow-xl active:scale-95"
-                style={{ backgroundColor: PRIMARY_COLOR }}
-              >
-                <Copy className="w-4 h-4" /> CSSをコピー
-              </button>
             </div>
           </div>
         </div>
 
         <div className="lg:col-span-8">
-          <div className="lg:sticky lg:top-8 flex justify-center">
-            <div 
-              className="bg-white rounded-[2.5rem] shadow-2xl border border-slate-200 overflow-hidden transition-all duration-500 ease-in-out"
-              style={{ width: VIEWPORT_SIZES[previewMode].width, maxWidth: '100%' }}
-            >
-              {previewMode !== 'pc' && (
-                <div className="h-12 bg-slate-100 flex items-center justify-center gap-1.5 border-b border-slate-200">
-                  <div className="w-2 h-2 rounded-full bg-slate-300"></div>
-                  <div className="w-12 h-1.5 rounded-full bg-slate-300"></div>
-                </div>
-              )}
-
-              <div className="p-8 md:p-16 min-h-[600px] flex flex-col justify-center relative bg-white transition-all text-center md:text-left">
-                <div className="relative z-10">
-                  <h1 
-                    className="mb-8 leading-[1.3] transition-all duration-500"
-                    style={{ 
-                      fontFamily: headingFont.value,
-                      fontWeight: headingWeight,
-                      fontSize: `${headingSize}px`,
-                      color: headingColor,
-                      letterSpacing: `${letterSpacing}em`
-                    }}
-                  >
-                    {headingText}
-                  </h1>
-                  <p 
-                    className="transition-all duration-500"
-                    style={{ 
-                      fontFamily: bodyFont.value,
-                      fontWeight: bodyWeight,
-                      fontSize: `${bodySize}px`,
-                      color: bodyColor,
-                      lineHeight: lineHeight,
-                      letterSpacing: `${letterSpacing}em`
-                    }}
-                  >
-                    {bodyText}
-                  </p>
-                </div>
+          <div className="lg:sticky lg:top-8 flex flex-col items-center">
+            <div className="bg-white rounded-[2.5rem] shadow-2xl border border-slate-200 overflow-hidden transition-all duration-500 w-full" style={{ width: VIEWPORT_SIZES[previewMode].width, maxWidth: '100%' }}>
+              <div className="p-8 md:p-16 min-h-[500px] flex flex-col justify-center bg-white text-center md:text-left">
+                <h1 className="mb-8 leading-[1.3]" style={{ fontFamily: headingFont.value, fontWeight: headingWeight, fontSize: `${headingSize}px`, color: headingColor, letterSpacing: `${letterSpacing}em` }}>{headingText}</h1>
+                <p style={{ fontFamily: bodyFont.value, fontWeight: bodyWeight, fontSize: `${bodySize}px`, color: bodyColor, lineHeight: lineHeight, letterSpacing: `${letterSpacing}em` }}>{bodyText}</p>
               </div>
             </div>
           </div>
         </div>
       </div>
 
+      {/* Footer Area for AdSense/SEO */}
+      <footer className="max-w-7xl mx-auto w-full mt-20 pt-12 pb-20 border-t border-slate-200">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div>
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-4">About KumiFont</h3>
+            <p className="text-sm text-slate-500 leading-relaxed">
+              KumiFont（クミフォント）は、Webデザイナーが日本語フォントの最適な「組み合わせ（和組み）」を直感的にシミュレーションするためのツールです。Google Fontsで提供されている高品質なフォントを厳選し、実際の実装に近い形でプレビューできます。
+            </p>
+          </div>
+          <div className="flex flex-col gap-4">
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-2">Information</h3>
+            <div className="flex flex-wrap gap-4">
+              <button onClick={() => setModalType('about')} className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"><Info className="w-4 h-4" /> このツールについて</button>
+              <button onClick={() => setModalType('privacy')} className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"><ShieldCheck className="w-4 h-4" /> プライバシーポリシー</button>
+            </div>
+            <p className="text-[10px] text-slate-400 mt-4">© 2026 KumiFont. Designed by Kyo-kan Design.</p>
+          </div>
+        </div>
+      </footer>
+
+      {/* Modals */}
+      {modalType && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl w-full max-w-2xl max-h-[80vh] overflow-y-auto p-8 relative shadow-2xl">
+            <button onClick={() => setModalType(null)} className="absolute top-6 right-6 p-2 hover:bg-slate-100 rounded-full transition-colors"><X className="w-6 h-6 text-slate-400" /></button>
+            {modalType === 'about' ? (
+              <article className="prose prose-slate">
+                <h2 className="text-2xl font-black mb-6">KumiFontについて</h2>
+                <p className="text-slate-600 mb-4">Webサイト制作において、フォントの選定はブランドの印象を決定づける重要な要素です。しかし、日本語フォントはウェイトや明朝・ゴシックの組み合わせによって可読性が大きく変わります。</p>
+                <p className="text-slate-600 mb-4">KumiFontは、現場のデザイナーが「サクッと」最適なペアリングを見つけ、そのままCSSをコピーして開発に活かせるよう設計されています。</p>
+                <h3 className="font-bold mt-6 mb-2">対応フォント一覧</h3>
+                <div className="flex flex-wrap gap-2">
+                  {GOOGLE_FONTS.map(f => <span key={f.name} className="px-3 py-1 bg-slate-100 rounded-full text-[10px] font-bold text-slate-500">{f.name}</span>)}
+                </div>
+              </article>
+            ) : (
+              <article className="prose prose-slate">
+                <h2 className="text-2xl font-black mb-6">プライバシーポリシー</h2>
+                <div className="text-slate-600 text-sm space-y-4">
+                  <p><strong>広告の配信について:</strong> 当サイトでは、第三者配信の広告サービス（Googleアドセンス）を利用しています。Cookieを使用することで、お客様の過去のアクセス情報に基づいた適切な広告を表示します。</p>
+                  <p><strong>アクセス解析ツールについて:</strong> 当サイトでは、Googleによるアクセス解析ツール「Googleアナリティクス」を利用しています。トラフィックデータは匿名で収集されており、個人を特定するものではありません。</p>
+                  <p><strong>免責事項:</strong> 当サイトのシミュレーション結果により生じたトラブルや損失、損害等につきましては、一切責任を負いかねます。最終的なフォント選定は自己責任でお願いいたします。</p>
+                </div>
+              </article>
+            )}
+          </div>
+        </div>
+      )}
+
       {showToast && (
         <div className="fixed bottom-10 left-1/2 -translate-x-1/2 text-white px-10 py-5 rounded-2xl shadow-2xl flex items-center gap-3 animate-in fade-in slide-in-from-bottom-4 duration-300 z-50" style={{ backgroundColor: PRIMARY_COLOR }}>
-          <CheckCircle2 className="w-5 h-5 text-green-400" /> 
-          <span className="text-sm font-bold tracking-tight">CSSをクリップボードにコピーしました</span>
+          <CheckCircle2 className="w-5 h-5 text-green-400" /> <span className="text-sm font-bold tracking-tight">CSSをクリップボードにコピーしました</span>
         </div>
       )}
     </div>
