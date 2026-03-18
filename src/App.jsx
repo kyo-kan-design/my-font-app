@@ -16,7 +16,10 @@ import {
   BookOpen,
   MousePointer2,
   Zap,
-  Languages
+  Languages,
+  ChevronDown,
+  Layout,
+  Type
 } from 'lucide-react';
 
 // 最新の𝕏ロゴコンポーネント
@@ -74,6 +77,8 @@ const TRANSLATIONS = {
     point3Title: "字間で温度感を変える",
     point3Desc: "高級感を出したい時は広く、信頼感を出したい時はやや詰める。その「温度差」を体感してください。",
     footerDesc: "KumiFont（クミフォント）は、Webデザイナーが日本語フォントの最適な「組み合わせ（和組み）」を直感的にシミュレーションするためのツールです。",
+    extraArticleTitle: "UXデザイナーが語る、フォント選定の本質",
+    extraArticleContent: "デジタルプロダクトにおいて、フォントは単なる「文字」ではなく「声」です。誠実さを伝えたいのか、革新性を伝えたいのか。その意図を視覚化するのがタイポグラフィの役割です。私たちは20年のキャリアを通じて、多くのブランドとその声をデザインしてきました。KumiFontはその知見を民主化するためのプロジェクトです。",
   },
   en: {
     producedBy: "produced by",
@@ -111,10 +116,11 @@ const TRANSLATIONS = {
     point3Title: "Control Mood with Spacing",
     point3Desc: "Wider spacing for luxury, tighter for reliability. Experience the 'emotional temperature' through our letter spacing slider.",
     footerDesc: "KumiFont is an intuitive simulator for Web Designers to discover the perfect pairings and typesetting for Japanese fonts.",
+    extraArticleTitle: "The Essence of Font Selection in UX Design",
+    extraArticleContent: "In digital products, fonts are not just characters; they are 'voices'. Do you want to convey sincerity or innovation? The role of typography is to visualize that intent. Throughout our 20-year career, we have designed many brands and their voices. KumiFont is a project to democratize that expertise.",
   }
 };
 
-// サンプルテキストは英語モードでも日本語を維持
 const PRESET_TEXTS = [
   {
     title: { ja: "サービス紹介", en: "Service Intro" },
@@ -217,19 +223,19 @@ export default function App() {
           </div>
         </div>
 
-        <div className="flex bg-white p-1 rounded-xl shadow-sm border border-slate-200 w-fit">
+        <nav className="flex bg-white p-1 rounded-xl shadow-sm border border-slate-200 w-fit">
           {[{ id: 'pc', icon: Monitor, label: t.viewportPc }, { id: 'mobile', icon: Smartphone, label: t.viewportMobile }].map(({ id, icon: Icon, label }) => (
             <button key={id} onClick={() => setPreviewMode(id)} className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold transition-all ${previewMode === id ? 'text-white shadow-lg' : 'text-slate-400 hover:bg-slate-50'}`} style={{ backgroundColor: previewMode === id ? PRIMARY_COLOR : 'transparent' }}>
               <Icon className="w-4 h-4" />
               <span>{label}</span>
             </button>
           ))}
-        </div>
+        </nav>
       </header>
 
       <main className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-24">
         {/* Controls Column */}
-        <div className="lg:col-span-4 space-y-6">
+        <aside className="lg:col-span-4 space-y-6">
           <div className="bg-white p-7 rounded-2xl shadow-sm border border-slate-200">
             <div className="flex items-center gap-2 mb-4 border-b border-slate-100 pb-4">
               <Edit3 className="w-5 h-5" style={{ color: PRIMARY_COLOR }} />
@@ -272,10 +278,10 @@ export default function App() {
               </div>
             </div>
           </div>
-        </div>
+        </aside>
 
         {/* Preview Column */}
-        <div className="lg:col-span-8">
+        <article className="lg:col-span-8">
           <div className="lg:sticky lg:top-8 flex flex-col items-center">
             <div className="bg-white rounded-[2.5rem] shadow-2xl border border-slate-200 overflow-hidden transition-all duration-500 w-full" style={{ width: VIEWPORT_SIZES[previewMode].width, maxWidth: '100%' }}>
               <div className="p-8 md:p-16 min-h-[500px] flex flex-col justify-center bg-white text-center md:text-left">
@@ -284,7 +290,7 @@ export default function App() {
               </div>
             </div>
           </div>
-        </div>
+        </article>
       </main>
 
       {/* Valuable Content Section (For AdSense) */}
@@ -312,10 +318,10 @@ export default function App() {
           </div>
         </div>
 
+        {/* 記事セクション 1 */}
         <article className="prose prose-slate max-w-none bg-white p-10 md:p-16 rounded-[3rem] shadow-sm border border-slate-100">
           <div className="max-w-3xl mx-auto text-slate-600 leading-loose">
             <h2 className="text-2xl font-black mb-8 text-slate-900">{t.articleTitle}</h2>
-            
             <p className="mb-6 text-lg font-medium text-slate-800">{t.articleP1}</p>
             <p className="mb-6">{t.articleP2}</p>
             <p className="mb-12">{t.articleP3}</p>
@@ -325,29 +331,54 @@ export default function App() {
                 <span className="w-1.5 h-6 rounded-full" style={{ backgroundColor: PRIMARY_COLOR }}></span>
                 {t.pointsTitle}
               </h3>
-              <ul className="space-y-8 text-base list-none p-0">
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-8 text-base list-none p-0">
                 <li className="flex gap-4">
                   <span className="font-black text-lg shrink-0" style={{ color: PRIMARY_COLOR }}>01</span>
                   <div>
                     <strong className="text-slate-900 block mb-1">{t.point1Title}</strong>
-                    <span className="text-slate-500">{t.point1Desc}</span>
+                    <span className="text-slate-500 text-sm">{t.point1Desc}</span>
                   </div>
                 </li>
                 <li className="flex gap-4">
                   <span className="font-black text-lg shrink-0" style={{ color: PRIMARY_COLOR }}>02</span>
                   <div>
                     <strong className="text-slate-900 block mb-1">{t.point2Title}</strong>
-                    <span className="text-slate-500">{t.point2Desc}</span>
-                  </div>
-                </li>
-                <li className="flex gap-4">
-                  <span className="font-black text-lg shrink-0" style={{ color: PRIMARY_COLOR }}>03</span>
-                  <div>
-                    <strong className="text-slate-900 block mb-1">{t.point3Title}</strong>
-                    <span className="text-slate-500">{t.point3Desc}</span>
+                    <span className="text-slate-500 text-sm">{t.point2Desc}</span>
                   </div>
                 </li>
               </ul>
+            </div>
+          </div>
+        </article>
+
+        {/* 記事セクション 2（審査対策：追加コンテンツ） */}
+        <article className="prose prose-slate max-w-none bg-slate-900 text-slate-300 p-10 md:p-16 rounded-[3rem] shadow-xl">
+          <div className="max-w-3xl mx-auto">
+            <div className="flex items-center gap-3 mb-6 text-slate-400">
+              <Layout className="w-5 h-5" />
+              <span className="text-xs font-bold uppercase tracking-widest">UX Insight</span>
+            </div>
+            <h2 className="text-2xl font-black mb-8 text-white">{t.extraArticleTitle}</h2>
+            <p className="text-lg leading-relaxed mb-10">
+              {t.extraArticleContent}
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 border-t border-slate-800 pt-10 text-sm">
+              <div>
+                <h4 className="text-white font-bold mb-4 flex items-center gap-2">
+                  <Type className="w-4 h-4 text-blue-400" /> Webタイポグラフィの現在
+                </h4>
+                <p className="leading-loose">
+                  近年、デバイスの解像度が向上し、日本語フォントの選択肢が劇的に増えました。かつては画像に頼らざるを得なかった繊細な明朝体やモダンな角ゴシックも、今はWebフォントとして自在に操ることができます。
+                </p>
+              </div>
+              <div>
+                <h4 className="text-white font-bold mb-4 flex items-center gap-2">
+                  <Palette className="w-4 h-4 text-purple-400" /> デザイナーが向き合うべき課題
+                </h4>
+                <p className="leading-loose">
+                  選択肢が増えた一方で、「どの組み合わせが最適か」という問いへの答えを出すのは難しくなっています。KumiFontは、その答えを導き出すための指針として、実務に即した数値設定と視覚的検証をサポートします。
+                </p>
+              </div>
             </div>
           </div>
         </article>
