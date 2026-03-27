@@ -65,12 +65,12 @@ const TRANSLATIONS = {
     operator: "運営元",
     menuSimulator: "シミュレーター",
     menuGuide: "活用ガイド",
-    menuInsight: "専門家コラム",
+    menuColumn: "専門家コラム",
     mainHeading: "KumiFontが、Webデザインの「和組み」を変える。",
     benefit1Title: "1秒でシミュレート",
     benefit1Desc: "FigmaやPhotoshopを立ち上げる必要はありません。ブラウザ上でフォントの組み合わせを即座に検証し、最適な「和組み」を見つけ出します。",
     benefit2Title: "デザイナーの直感に寄り添う",
-    benefit2Desc: "UXデザイナーとしての20年の経験を活かし、制作現場で最も「面倒」だと感じていたプロセスを自動化。思考を止めずにデザインに冒頭できます。",
+    benefit2Desc: "UXデザイナーとしての20年の経験を活かし、制作現場で最も「面倒」だと感じていたプロセスを自動化。思考を止めずにデザインに没頭できます。",
     benefit3Title: "実務に即したコード出力",
     benefit3Desc: "シミュレーションして終わりではありません。ウェイトや行間、字間などの数値をCSSとしてワンクリックでコピーし、そのまま実装へ繋げられます。",
     articleTitle: "日本語タイポグラフィの「共感」をデザインする",
@@ -121,7 +121,7 @@ const TRANSLATIONS = {
     operator: "Operator",
     menuSimulator: "Simulator",
     menuGuide: "Guide",
-    menuInsight: "UX Insight",
+    menuColumn: "Column",
     mainHeading: "KumiFont Revolutionizes Japanese Web Typography.",
     benefit1Title: "Simulate in 1 Second",
     benefit1Desc: "No need to launch Figma or Photoshop. Instantly verify font pairings in your browser to find the perfect Japanese typography set.",
@@ -182,7 +182,7 @@ const PRIMARY_COLOR = '#6B8EAD';
 
 export default function App() {
   const [lang, setLang] = useState('ja');
-  const [view, setView] = useState('home'); // 'home', 'guide', 'insight'
+  const [view, setView] = useState('home'); // 'home', 'guide', 'column'
   const [headingFont, setHeadingFont] = useState(GOOGLE_FONTS[1]);
   const [bodyFont, setBodyFont] = useState(GOOGLE_FONTS[0]);
   const [headingSize, setHeadingSize] = useState(48);
@@ -204,6 +204,25 @@ export default function App() {
   const [modalType, setModalType] = useState(null); 
 
   const t = TRANSLATIONS[lang];
+
+  // URLパスに基づいてビューを初期設定
+  useEffect(() => {
+    const handleLocation = () => {
+      try {
+        const path = window.location.pathname;
+        if (path === '/guide') setView('guide');
+        else if (path === '/column') setView('column');
+        else setView('home');
+      } catch (e) {
+        // サンドボックス環境等でlocationにアクセスできない場合のフォールバック
+        setView('home');
+      }
+    };
+
+    handleLocation();
+    window.addEventListener('popstate', handleLocation);
+    return () => window.removeEventListener('popstate', handleLocation);
+  }, []);
 
   useEffect(() => {
     const fontId = 'google-fonts-link';
@@ -234,15 +253,23 @@ export default function App() {
     setBodyFont(GOOGLE_FONTS[Math.floor(Math.random() * GOOGLE_FONTS.length)]);
   };
 
-  const changeView = (newView) => {
+  // パスを変更しながらビューを切り替える（SecurityErrorを回避）
+  const navigateTo = (newView, path) => {
     setView(newView);
+    try {
+      // 本番ドメイン以外（blobやサンドボックス）では pushState が制限されることがあるため
+      window.history.pushState({}, '', path);
+    } catch (e) {
+      // エラーが発生しても内部状態（setView）は更新されているので、アプリの動作は継続可能
+      console.warn('Navigation URL sync is restricted in this environment.');
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // 下層ページ用の共通レイアウト
   const PageWrapper = ({ children, title, icon: Icon, backLabel }) => (
     <div className="max-w-5xl mx-auto w-full px-4 mb-24 space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <button onClick={() => changeView('home')} className="flex items-center gap-2 text-xs font-black text-slate-400 hover:text-slate-900 transition-all uppercase tracking-widest group">
+      <button onClick={() => navigateTo('home', '/')} className="flex items-center gap-2 text-xs font-black text-slate-400 hover:text-slate-900 transition-all uppercase tracking-widest group">
         <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> {backLabel}
       </button>
       
@@ -338,8 +365,8 @@ export default function App() {
                 </select>
               </section>
               <div className="flex flex-col gap-3 pt-6 border-t border-slate-100">
-                <button onClick={randomize} className="flex items-center justify-center gap-2 w-full py-4 bg-slate-50 hover:bg-slate-100 text-slate-500 rounded-xl font-black transition-all border border-slate-200"><RefreshCcw className="w-4 h-4" /> Simulator</button>
-                <button onClick={copyCSS} className="flex items-center justify-center gap-2 w-full py-4 text-white rounded-xl font-black transition-all shadow-xl active:scale-95" style={{ backgroundColor: PRIMARY_COLOR }}><Copy className="w-4 h-4" /> CSSをコピー</button>
+                <button onClick={randomize} className="flex items-center justify-center gap-2 w-full py-4 bg-slate-50 hover:bg-slate-100 text-slate-500 rounded-xl font-black transition-all border border-slate-200"><RefreshCcw className="w-4 h-4" /> {t.shuffle}</button>
+                <button onClick={copyCSS} className="flex items-center justify-center gap-2 w-full py-4 text-white rounded-xl font-black transition-all shadow-xl active:scale-95" style={{ backgroundColor: PRIMARY_COLOR }}><Copy className="w-4 h-4" /> {t.copyCss}</button>
               </div>
             </div>
           </div>
@@ -366,12 +393,12 @@ export default function App() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
-          <div onClick={() => changeView('guide')} className="group bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm hover:border-blue-200 cursor-pointer transition-all hover:shadow-xl">
+          <div onClick={() => navigateTo('guide', '/guide')} className="group bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm hover:border-blue-200 cursor-pointer transition-all hover:shadow-xl">
             <Zap className="w-6 h-6 mb-4 group-hover:scale-110 transition-transform" style={{ color: PRIMARY_COLOR }} />
             <h3 className="font-black text-lg mb-3">{t.benefit1Title}</h3>
             <p className="text-slate-500 leading-relaxed">{t.benefit1Desc}</p>
           </div>
-          <div onClick={() => changeView('insight')} className="group bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm hover:border-blue-200 cursor-pointer transition-all hover:shadow-xl">
+          <div onClick={() => navigateTo('column', '/column')} className="group bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm hover:border-blue-200 cursor-pointer transition-all hover:shadow-xl">
             <MousePointer2 className="w-6 h-6 mb-4 group-hover:scale-110 transition-transform" style={{ color: PRIMARY_COLOR }} />
             <h3 className="font-black text-lg mb-3">{t.benefit2Title}</h3>
             <p className="text-slate-500 leading-relaxed">{t.benefit2Desc}</p>
@@ -440,9 +467,9 @@ export default function App() {
     </PageWrapper>
   );
 
-  const renderInsight = () => (
-    <PageWrapper title={t.menuInsight} icon={Lightbulb} backLabel={t.backToSim}>
-      <article id="insight" className="prose prose-slate max-w-none bg-slate-900 text-slate-300 p-10 md:p-16 rounded-[4rem] shadow-xl relative overflow-hidden">
+  const renderColumn = () => (
+    <PageWrapper title={t.menuColumn} icon={Lightbulb} backLabel={t.backToSim}>
+      <article id="column" className="prose prose-slate max-w-none bg-slate-900 text-slate-300 p-10 md:p-16 rounded-[4rem] shadow-xl relative overflow-hidden">
         <div className="absolute top-0 right-0 p-12 opacity-10">
           <Lightbulb className="w-48 h-48 text-white" />
         </div>
@@ -479,7 +506,7 @@ export default function App() {
       {/* Header Area */}
       <header className="max-w-7xl mx-auto w-full mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="flex items-center gap-6">
-          <div className="cursor-pointer" onClick={() => changeView('home')}>
+          <div className="cursor-pointer" onClick={() => navigateTo('home', '/')}>
             <h1 className="text-3xl font-black tracking-tighter leading-none text-black">KumiFont</h1>
             <p className="text-slate-500 text-[10px] font-medium mt-2 uppercase tracking-tighter">
               {t.producedBy} <a href="https://kyo-kan-design.com/" target="_blank" rel="noopener noreferrer" className="text-slate-700 font-bold hover:underline">共感デザイン研究所</a>
@@ -488,9 +515,9 @@ export default function App() {
           <div className="h-8 w-px bg-slate-200 hidden md:block"></div>
           
           <nav className="flex items-center gap-6 text-[11px] font-black uppercase tracking-widest">
-            <button onClick={() => changeView('home')} className={`transition-all hover:scale-105 ${view === 'home' ? 'text-black border-b-2 border-black' : 'text-slate-400 hover:text-slate-900'}`}>{t.menuSimulator}</button>
-            <button onClick={() => changeView('guide')} className={`transition-all hover:scale-105 ${view === 'guide' ? 'text-black border-b-2 border-black' : 'text-slate-400 hover:text-slate-900'}`}>{t.menuGuide}</button>
-            <button onClick={() => changeView('insight')} className={`transition-all hover:scale-105 ${view === 'insight' ? 'text-black border-b-2 border-black' : 'text-slate-400 hover:text-slate-900'}`}>{t.menuInsight}</button>
+            <button onClick={() => navigateTo('home', '/')} className={`transition-all hover:scale-105 ${view === 'home' ? 'text-black border-b-2 border-black' : 'text-slate-400 hover:text-slate-900'}`}>{t.menuSimulator}</button>
+            <button onClick={() => navigateTo('guide', '/guide')} className={`transition-all hover:scale-105 ${view === 'guide' ? 'text-black border-b-2 border-black' : 'text-slate-400 hover:text-slate-900'}`}>{t.menuGuide}</button>
+            <button onClick={() => navigateTo('column', '/column')} className={`transition-all hover:scale-105 ${view === 'column' ? 'text-black border-b-2 border-black' : 'text-slate-400 hover:text-slate-900'}`}>{t.menuColumn}</button>
           </nav>
           
           <div className="flex items-center gap-4">
@@ -521,7 +548,7 @@ export default function App() {
         )}
       </header>
 
-      {view === 'home' ? renderSimulator() : view === 'guide' ? renderGuide() : renderInsight()}
+      {view === 'home' ? renderSimulator() : view === 'guide' ? renderGuide() : renderColumn()}
 
       {/* Footer Area */}
       <footer className="max-w-7xl mx-auto w-full pt-12 pb-20 border-t border-slate-200 mt-auto">
@@ -538,9 +565,9 @@ export default function App() {
             <div>
               <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-4">Information</h3>
               <nav className="flex flex-wrap gap-4">
-                <button onClick={() => changeView('home')} className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors">{t.menuSimulator}</button>
-                <button onClick={() => changeView('guide')} className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors">{t.menuGuide}</button>
-                <button onClick={() => changeView('insight')} className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors">{t.menuInsight}</button>
+                <button onClick={() => navigateTo('home', '/')} className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors">{t.menuSimulator}</button>
+                <button onClick={() => navigateTo('guide', '/guide')} className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors">{t.menuGuide}</button>
+                <button onClick={() => navigateTo('column', '/column')} className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors">{t.menuColumn}</button>
                 <button onClick={() => setModalType('privacy')} className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"><ShieldCheck className="w-4 h-4" /> {t.privacy}</button>
                 <a href="https://kyo-kan-design.com/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"><ExternalLink className="w-4 h-4" /> {t.operator}</a>
               </nav>
@@ -574,7 +601,7 @@ export default function App() {
 
       {showToast && (
         <div className="fixed bottom-10 left-1/2 -translate-x-1/2 text-white px-10 py-5 rounded-2xl shadow-2xl flex items-center gap-3 animate-in fade-in slide-in-from-bottom-4 duration-300 z-50" style={{ backgroundColor: PRIMARY_COLOR }}>
-          <CheckCircle2 className="w-5 h-5 text-green-400" /> <span className="text-sm font-bold tracking-tight">CSSをクリップボードにコピーしました</span>
+          <CheckCircle2 className="w-5 h-5 text-green-400" /> <span className="text-sm font-bold tracking-tight">{t.copied}</span>
         </div>
       )}
     </div>
