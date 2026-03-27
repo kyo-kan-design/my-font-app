@@ -70,7 +70,7 @@ const TRANSLATIONS = {
     benefit1Title: "1秒でシミュレート",
     benefit1Desc: "FigmaやPhotoshopを立ち上げる必要はありません。ブラウザ上でフォントの組み合わせを即座に検証し、最適な「和組み」を見つけ出します。",
     benefit2Title: "デザイナーの直感に寄り添う",
-    benefit2Desc: "UXデザイナーとしての20年の経験を活かし、制作現場で最も「面倒」だと感じていたプロセスを自動化。思考を止めずにデザインに没頭できます。",
+    benefit2Desc: "UXデザイナーとしての20年の経験を活かし、制作現場で最も「面倒」だと感じていたプロセスを自動化。思考を止めずにデザインに冒頭できます。",
     benefit3Title: "実務に即したコード出力",
     benefit3Desc: "シミュレーションして終わりではありません。ウェイトや行間、字間などの数値をCSSとしてワンクリックでコピーし、そのまま実装へ繋げられます。",
     articleTitle: "日本語タイポグラフィの「共感」をデザインする",
@@ -99,7 +99,8 @@ const TRANSLATIONS = {
     font2Text: "明るくモダンな印象を与えるフォント。やや丸みを帯びた形状が、サービスに親しみやすさと透明感をもたらします。",
     font3Name: "Shippori Mincho",
     font3Text: "優雅で情緒的な明朝体。美しいカーブが特徴で、ポートフォリオや高級感のあるメディアサイトに最適です。",
-    backToSim: "シミュレーターに戻る"
+    backToSim: "シミュレーターに戻る",
+    clear: "消去"
   },
   en: {
     producedBy: "produced by",
@@ -154,7 +155,8 @@ const TRANSLATIONS = {
     font2Text: "A font that gives a bright and modern impression. Its slightly rounded shapes bring friendliness and clarity to services.",
     font3Name: "Shippori Mincho",
     font3Text: "An elegant and emotional Mincho font. Its beautiful curves make it ideal for portfolios or high-end media sites.",
-    backToSim: "Back to Simulator"
+    backToSim: "Back to Simulator",
+    clear: "Clear"
   }
 };
 
@@ -269,11 +271,47 @@ export default function App() {
               <h2 className="text-lg font-bold">{t.textEdit}</h2>
             </div>
             <div className="space-y-4">
-              <section><label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block">{t.heading}</label>
-                <input type="text" value={headingText} onChange={(e) => setHeadingText(e.target.value)} className="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 transition-all" style={{ '--tw-ring-color': PRIMARY_COLOR }} />
+              <section>
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block">{t.heading}</label>
+                <div className="relative group">
+                  <input 
+                    type="text" 
+                    value={headingText} 
+                    onChange={(e) => setHeadingText(e.target.value)} 
+                    className="w-full p-3.5 pr-10 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 transition-all" 
+                    style={{ '--tw-ring-color': PRIMARY_COLOR }} 
+                  />
+                  {headingText && (
+                    <button 
+                      onClick={() => setHeadingText('')} 
+                      className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-300 hover:text-slate-600 transition-colors"
+                      title={t.clear}
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
               </section>
-              <section><label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block">{t.body}</label>
-                <textarea rows="4" value={bodyText} onChange={(e) => setBodyText(e.target.value)} className="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 transition-all resize-none" style={{ '--tw-ring-color': PRIMARY_COLOR }} />
+              <section>
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block">{t.body}</label>
+                <div className="relative group">
+                  <textarea 
+                    rows="4" 
+                    value={bodyText} 
+                    onChange={(e) => setBodyText(e.target.value)} 
+                    className="w-full p-3.5 pr-10 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 transition-all resize-none" 
+                    style={{ '--tw-ring-color': PRIMARY_COLOR }} 
+                  />
+                  {bodyText && (
+                    <button 
+                      onClick={() => setBodyText('')} 
+                      className="absolute right-3 top-3 p-1 text-slate-300 hover:text-slate-600 transition-colors"
+                      title={t.clear}
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
               </section>
               <div className="grid grid-cols-2 gap-2">
                 {PRESET_TEXTS.map((p, idx) => (
@@ -300,8 +338,8 @@ export default function App() {
                 </select>
               </section>
               <div className="flex flex-col gap-3 pt-6 border-t border-slate-100">
-                <button onClick={randomize} className="flex items-center justify-center gap-2 w-full py-4 bg-slate-50 hover:bg-slate-100 text-slate-500 rounded-xl font-black transition-all border border-slate-200"><RefreshCcw className="w-4 h-4" /> {t.shuffle}</button>
-                <button onClick={copyCSS} className="flex items-center justify-center gap-2 w-full py-4 text-white rounded-xl font-black transition-all shadow-xl active:scale-95" style={{ backgroundColor: PRIMARY_COLOR }}><Copy className="w-4 h-4" /> {t.copyCss}</button>
+                <button onClick={randomize} className="flex items-center justify-center gap-2 w-full py-4 bg-slate-50 hover:bg-slate-100 text-slate-500 rounded-xl font-black transition-all border border-slate-200"><RefreshCcw className="w-4 h-4" /> Simulator</button>
+                <button onClick={copyCSS} className="flex items-center justify-center gap-2 w-full py-4 text-white rounded-xl font-black transition-all shadow-xl active:scale-95" style={{ backgroundColor: PRIMARY_COLOR }}><Copy className="w-4 h-4" /> CSSをコピー</button>
               </div>
             </div>
           </div>
@@ -536,7 +574,7 @@ export default function App() {
 
       {showToast && (
         <div className="fixed bottom-10 left-1/2 -translate-x-1/2 text-white px-10 py-5 rounded-2xl shadow-2xl flex items-center gap-3 animate-in fade-in slide-in-from-bottom-4 duration-300 z-50" style={{ backgroundColor: PRIMARY_COLOR }}>
-          <CheckCircle2 className="w-5 h-5 text-green-400" /> <span className="text-sm font-bold tracking-tight">{t.copied}</span>
+          <CheckCircle2 className="w-5 h-5 text-green-400" /> <span className="text-sm font-bold tracking-tight">CSSをクリップボードにコピーしました</span>
         </div>
       )}
     </div>
