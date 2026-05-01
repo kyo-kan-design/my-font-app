@@ -66,12 +66,25 @@ export const PRESET_TEXTS = [
 ];
 
 export const GOOGLE_FONTS = [
+  // ===== ゴシック / Sans =====
   { name: 'Noto Sans JP', value: "'Noto Sans JP', sans-serif" },
-  { name: 'Noto Serif JP', value: "'Noto Serif JP', serif" },
   { name: 'M PLUS 1p', value: "'M PLUS 1p', sans-serif" },
-  { name: 'Sawarabi Mincho', value: "'Sawarabi Mincho', serif" },
-  { name: 'Sawarabi Gothic', value: "'Sawarabi Gothic', sans-serif" },
-  { name: 'Shippori Mincho', value: "'Shippori Mincho', serif" },
+  { name: 'M PLUS Rounded 1c', value: "'M PLUS Rounded 1c', sans-serif" },
   { name: 'Zen Kaku Gothic New', value: "'Zen Kaku Gothic New', sans-serif" },
+  { name: 'Zen Kaku Gothic Antique', value: "'Zen Kaku Gothic Antique', sans-serif" },
+  { name: 'Zen Maru Gothic', value: "'Zen Maru Gothic', sans-serif" },
+  { name: 'Sawarabi Gothic', value: "'Sawarabi Gothic', sans-serif" },
+  { name: 'BIZ UDPGothic', value: "'BIZ UDPGothic', sans-serif" },
+  { name: 'IBM Plex Sans JP', value: "'IBM Plex Sans JP', sans-serif" },
+  // ===== 明朝 / Serif =====
+  { name: 'Noto Serif JP', value: "'Noto Serif JP', serif" },
+  { name: 'Shippori Mincho', value: "'Shippori Mincho', serif" },
+  { name: 'Sawarabi Mincho', value: "'Sawarabi Mincho', serif" },
+  { name: 'Zen Old Mincho', value: "'Zen Old Mincho', serif" },
   { name: 'Kaisei Opti', value: "'Kaisei Opti', serif" },
+  // ===== 個性派 / Display =====
+  { name: 'Klee One', value: "'Klee One', serif" },
+  { name: 'Yusei Magic', value: "'Yusei Magic', sans-serif" },
+  { name: 'Kiwi Maru', value: "'Kiwi Maru', serif" },
+  { name: 'RocknRoll One', value: "'RocknRoll One', sans-serif" },
 ];
