@@ -248,7 +248,6 @@ export default function App() {
               <h3 className="text-xl font-black mb-2">{g.name}</h3>
               <p className="text-xs text-slate-400 mb-4">{g.category}</p>
               <p className="text-sm text-slate-600 leading-relaxed mb-4">{g.description}</p>
-              <p className="text-xs text-slate-500"><strong>{t.recommendedUsage}:</strong> {g.usage}</p>
             </div>
           ))}
         </section>
