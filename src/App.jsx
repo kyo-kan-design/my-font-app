@@ -382,6 +382,106 @@ export default function App() {
         </button>
       </section>
 
+            {/* トップページ説明コンテンツ */}
+            <section className="max-w-5xl mx-auto w-full mb-24 px-4 space-y-10">
+        <div className="space-y-4">
+          <h2 className="text-3xl font-black tracking-tight text-slate-900">
+            KumiFontでできること
+          </h2>
+          <p className="text-slate-600 leading-loose">
+            KumiFontは、WebサイトやUIデザインで使う日本語フォントの組み合わせを、
+            ブラウザ上で確認できる無料ツールです。見出しと本文に異なるフォントを指定し、
+            文字サイズ、行間、字間、色、太さを調整しながら、実際のWebページに近い見た目を比較できます。
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-white p-7 rounded-2xl border border-slate-100 shadow-sm">
+            <h3 className="font-black text-lg mb-3 text-slate-900">
+              フォントの組み合わせを比較
+            </h3>
+            <p className="text-sm text-slate-500 leading-relaxed">
+              Noto Sans JP、Noto Serif JP、M PLUS 1p、Shippori Minchoなど、
+              Web制作でよく使われる日本語フォントを見出しと本文で組み合わせて確認できます。
+            </p>
+          </div>
+
+          <div className="bg-white p-7 rounded-2xl border border-slate-100 shadow-sm">
+            <h3 className="font-black text-lg mb-3 text-slate-900">
+              読みやすさを調整
+            </h3>
+            <p className="text-sm text-slate-500 leading-relaxed">
+              日本語本文で重要な行間や字間を調整しながら、
+              長文でも読みやすいバランスを検討できます。
+            </p>
+          </div>
+
+          <div className="bg-white p-7 rounded-2xl border border-slate-100 shadow-sm">
+            <h3 className="font-black text-lg mb-3 text-slate-900">
+              PC・スマホ表示を確認
+            </h3>
+            <p className="text-sm text-slate-500 leading-relaxed">
+              デスクトップとスマートフォンの表示幅を切り替えて、
+              画面サイズによる文字の見え方の違いを確認できます。
+            </p>
+          </div>
+
+          <div className="bg-white p-7 rounded-2xl border border-slate-100 shadow-sm">
+            <h3 className="font-black text-lg mb-3 text-slate-900">
+              CSSをコピー
+            </h3>
+            <p className="text-sm text-slate-500 leading-relaxed">
+              調整したフォント設定はCSSとしてコピーできるため、
+              Web制作やプロトタイプ作成にそのまま活用できます。
+            </p>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <h2 className="text-3xl font-black tracking-tight text-slate-900">
+            日本語フォント選びが重要な理由
+          </h2>
+          <p className="text-slate-600 leading-loose">
+            日本語は漢字、ひらがな、カタカナ、英数字が混在するため、
+            画面上の密度が高くなりやすい特徴があります。
+            そのため、フォントの種類だけでなく、行間、字間、太さ、
+            見出しと本文の役割分担を合わせて考えることが大切です。
+          </p>
+        </div>
+
+        <div className="bg-white p-7 rounded-2xl border border-slate-100 shadow-sm">
+          <h2 className="text-2xl font-black tracking-tight text-slate-900 mb-5">
+            おすすめ記事
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <a
+              href="/article/noto-sans-vs-serif"
+              className="text-sm font-bold text-slate-700 hover:underline"
+            >
+              Noto Sans JPとNoto Serif JPの使い分け完全ガイド
+            </a>
+            <a
+              href="/article/font-pairing-7-patterns"
+              className="text-sm font-bold text-slate-700 hover:underline"
+            >
+              失敗しないWebサイトのフォント組み合わせ7パターン
+            </a>
+            <a
+              href="/article/line-height-guide"
+              className="text-sm font-bold text-slate-700 hover:underline"
+            >
+              行間(line-height)1.5/1.7/2.0の違いと使いどころ
+            </a>
+            <a
+              href="/article/letter-spacing-japanese"
+              className="text-sm font-bold text-slate-700 hover:underline"
+            >
+              字間(letter-spacing)が日本語Webの可読性に与える影響
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* AdSense用バリュアブルコンテンツ */}
       <section className="max-w-4xl mx-auto w-full mb-24 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm px-4">
         <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
