@@ -6,7 +6,6 @@ import { fileURLToPath } from 'url';
 import { articles } from './src/articles.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const isVercel = process.env.VERCEL === '1';
 
 // プリレンダー対象URLを動的に生成
 const staticRoutes = ['/', '/column', '/guide', '/about', '/privacy', '/contact'];
@@ -16,20 +15,14 @@ const allRoutes = [...staticRoutes, ...articleRoutes];
 export default defineConfig({
   plugins: [
     react(),
-    ...(
-      isVercel
-        ? []
-        : [
-            htmlPrerender({
-              staticDir: path.join(__dirname, 'dist'),
-              routes: allRoutes,
-              selector: '#root',
-              minify: {
-                collapseWhitespace: true,
-                removeComments: true,
-              },
-            }),
-          ]
-    ),
+    htmlPrerender({
+      staticDir: path.join(__dirname, 'dist'),
+      routes: allRoutes,
+      selector: '#root',
+      minify: {
+        collapseWhitespace: true,
+        removeComments: true,
+      },
+    }),
   ],
 });

@@ -205,15 +205,11 @@ export default function App() {
   // 記事詳細ページ
   if (view === 'article' && currentSlug) {
     const article = articles.find(a => a.slug === currentSlug);
+
     return (
       <div className="min-h-screen bg-[#f8fafc] text-slate-900 font-sans p-4 md:p-8 flex flex-col">
         {renderHeader()}
-        <div className="max-w-3xl mx-auto w-full mb-8">
-          <button onClick={() => navigate('column')} className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-slate-900 mb-6">
-            <ArrowLeft className="w-4 h-4" /> {t.column}
-          </button>
-        </div>
-        <Article article={article} />
+        <Article article={article} navigateTo={navigate} />
         {renderFooter()}
         {renderOverlays()}
       </div>
