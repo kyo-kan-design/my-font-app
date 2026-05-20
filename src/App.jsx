@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Copy, RefreshCcw, Settings2, CheckCircle2, Smartphone, Monitor, Edit3, Info, ShieldCheck, X, ExternalLink, BookOpen, MousePointer2, Zap, Languages, ArrowLeft } from 'lucide-react';
+import { Copy, RefreshCcw, Settings2, CheckCircle2, Smartphone, Monitor, Edit3, Info, ShieldCheck, ExternalLink, BookOpen, MousePointer2, Zap, Languages, ArrowLeft, Mail } from 'lucide-react';
 import { articles } from './articles';
 import { fontGuide } from './guideContent';
 import Article from './Article';
 import ArticleList from './ArticleList';
 import AboutPage from './AboutPage';
+import PrivacyPage from './PrivacyPage';
+import ContactPage from './ContactPage';
 import { TRANSLATIONS, PRESET_TEXTS, GOOGLE_FONTS } from './Translations';
 
 // 𝕏 (Twitter) icon
@@ -20,7 +22,7 @@ const PRIMARY_COLOR = '#6B8EAD';
 export default function App() {
   // 言語・画面遷移
   const [lang, setLang] = useState('ja');
-  const [view, setView] = useState('home'); // 'home' | 'column' | 'article' | 'guide' | 'about'
+  const [view, setView] = useState('home'); // 'home' | 'column' | 'article' | 'guide' | 'about' | 'privacy' | 'contact'
   const [currentSlug, setCurrentSlug] = useState(null);
 
   // フォント・タイポ設定
@@ -41,7 +43,6 @@ export default function App() {
   const [bodyText, setBodyText] = useState(PRESET_TEXTS[0].body);
   const [activePresetIndex, setActivePresetIndex] = useState(0);
   const [showToast, setShowToast] = useState(false);
-  const [modalType, setModalType] = useState(null);
 
   const t = TRANSLATIONS[lang];
 
@@ -69,6 +70,8 @@ export default function App() {
       if (path === '/column') setView('column');
       else if (path === '/guide') setView('guide');
       else if (path === '/about') setView('about');
+      else if (path === '/privacy') setView('privacy');
+      else if (path === '/contact') setView('contact');
       else setView('home');
     };
 
@@ -85,6 +88,8 @@ export default function App() {
     if (newView === 'column') path = '/column';
     else if (newView === 'guide') path = '/guide';
     else if (newView === 'about') path = '/about';
+    else if (newView === 'privacy') path = '/privacy';
+    else if (newView === 'contact') path = '/contact';
     else if (newView === 'article' && slug) path = `/article/${slug}`;
     window.history.pushState({}, '', path);
     window.scrollTo(0, 0);
@@ -170,7 +175,8 @@ export default function App() {
             <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-4">Information</h3>
             <nav className="flex flex-wrap gap-4">
               <button onClick={() => navigate('about')} className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"><Info className="w-4 h-4" /> {t.about}</button>
-              <button onClick={() => setModalType('privacy')} className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"><ShieldCheck className="w-4 h-4" /> {t.privacy}</button>
+              <button onClick={() => navigate('privacy')} className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"><ShieldCheck className="w-4 h-4" /> {t.privacy}</button>
+              <button onClick={() => navigate('contact')} className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"><Mail className="w-4 h-4" /> {t.contact}</button>
               <a href="https://kyo-kan-design.com/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"><ExternalLink className="w-4 h-4" /> {t.operator}</a>
             </nav>
           </div>
@@ -184,24 +190,9 @@ export default function App() {
     </footer>
   );
 
-  // モーダル＆トースト
+  // トースト
   const renderOverlays = () => (
     <>
-      {modalType && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl w-full max-w-2xl max-h-[80vh] overflow-y-auto p-8 relative shadow-2xl">
-            <button onClick={() => setModalType(null)} className="absolute top-6 right-6 p-2 hover:bg-slate-100 rounded-full transition-colors"><X className="w-6 h-6 text-slate-400" /></button>
-            <article className="prose prose-slate">
-              <h2 className="text-2xl font-black mb-6">{t.privacy}</h2>
-              <p className="text-slate-600 text-sm">This site is operated by Kyo-kan Design Inc.</p>
-              <div className="mt-8 space-y-4 text-xs text-slate-500">
-                <p><strong>Ads</strong>: This site may use third-party advertising services (Google AdSense).</p>
-                <p><strong>Analytics</strong>: This site uses Google Analytics to collect traffic information anonymously.</p>
-              </div>
-            </article>
-          </div>
-        </div>
-      )}
       {showToast && (
         <div className="fixed bottom-10 left-1/2 -translate-x-1/2 text-white px-10 py-5 rounded-2xl shadow-2xl flex items-center gap-3 z-50" style={{ backgroundColor: PRIMARY_COLOR }}>
           <CheckCircle2 className="w-5 h-5 text-green-400" />
@@ -251,6 +242,30 @@ export default function App() {
       <div className="min-h-screen bg-[#f8fafc] text-slate-900 font-sans p-4 md:p-8 flex flex-col">
         {renderHeader()}
         <AboutPage />
+        {renderFooter()}
+        {renderOverlays()}
+      </div>
+    );
+  }
+
+  // Privacyページ
+  if (view === 'privacy') {
+    return (
+      <div className="min-h-screen bg-[#f8fafc] text-slate-900 font-sans p-4 md:p-8 flex flex-col">
+        {renderHeader()}
+        <PrivacyPage />
+        {renderFooter()}
+        {renderOverlays()}
+      </div>
+    );
+  }
+
+  // Contactページ
+  if (view === 'contact') {
+    return (
+      <div className="min-h-screen bg-[#f8fafc] text-slate-900 font-sans p-4 md:p-8 flex flex-col">
+        {renderHeader()}
+        <ContactPage />
         {renderFooter()}
         {renderOverlays()}
       </div>
