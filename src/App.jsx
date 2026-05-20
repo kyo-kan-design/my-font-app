@@ -45,21 +45,36 @@ export default function App() {
 
   const t = TRANSLATIONS[lang];
 
-  // URLからviewを復元
+  // URLから view を復元（末尾スラッシュ差・ブラウザの戻る/進むに対応）
   useEffect(() => {
-    const path = window.location.pathname;
-    if (path.startsWith('/article/')) {
-      setCurrentSlug(path.replace('/article/', ''));
-      setView('article');
-    } else if (path === '/column') {
-      setView('column');
-    } else if (path === '/guide') {
-      setView('guide');
-    } else if (path === '/about') {
-      setView('about');
-    } else {
-      setView('home');
-    }
+    const normalizePath = (pathname) => {
+      const p = pathname.replace(/\/+$/, '');
+      return p === '' ? '/' : p;
+    };
+
+    const syncRouteFromLocation = () => {
+      const path = normalizePath(window.location.pathname);
+
+      if (path.startsWith('/article/')) {
+        const slug = path.slice('/article/'.length).replace(/^\/+|\/+$/g, '');
+        if (slug) {
+          setCurrentSlug(slug);
+          setView('article');
+          return;
+        }
+      }
+
+      setCurrentSlug(null);
+
+      if (path === '/column') setView('column');
+      else if (path === '/guide') setView('guide');
+      else if (path === '/about') setView('about');
+      else setView('home');
+    };
+
+    syncRouteFromLocation();
+    window.addEventListener('popstate', syncRouteFromLocation);
+    return () => window.removeEventListener('popstate', syncRouteFromLocation);
   }, []);
 
   // ナビゲーション関数
