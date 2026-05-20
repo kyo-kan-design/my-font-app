@@ -18,7 +18,7 @@ export default defineConfig({
     htmlPrerender({
       staticDir: path.join(__dirname, 'dist'),
       routes: allRoutes,
-      selector: '#root',
+      selector: '.min-h-screen',
       minify: {
         collapseWhitespace: true,
         removeComments: true,
