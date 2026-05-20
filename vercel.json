@@ -1,5 +1,14 @@
 {
+  "cleanUrls": true,
+  "trailingSlash": false,
   "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
+    {
+      "source": "/((?!assets|robots.txt|sitemap.xml|ads.txt|OGP.jpg|vite.svg).*)",
+      "destination": "/$1.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
   ]
 }
