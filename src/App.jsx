@@ -137,8 +137,12 @@ export default function App() {
         </div>
         <div className="h-8 w-px bg-slate-200 hidden md:block"></div>
         <div className="flex items-center gap-3 flex-wrap">
-          <button onClick={() => navigate('column')} className="text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors">{t.column}</button>
-          <button onClick={() => navigate('guide')} className="text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors">{t.guide}</button>
+        <a href="/column" className="text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors">
+          {t.column}
+        </a>
+        <a href="/guide" className="text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors">
+          {t.guide}
+        </a>
           <a href="https://x.com/kumifont" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-full text-xs font-bold hover:opacity-80 transition-all shadow-sm">
             <XIcon className="w-3.5 h-3.5" /> <span>{t.followUs}</span>
           </a>
@@ -174,9 +178,15 @@ export default function App() {
           <div>
             <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-4">Information</h3>
             <nav className="flex flex-wrap gap-4">
-              <button onClick={() => navigate('about')} className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"><Info className="w-4 h-4" /> {t.about}</button>
-              <button onClick={() => navigate('privacy')} className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"><ShieldCheck className="w-4 h-4" /> {t.privacy}</button>
-              <button onClick={() => navigate('contact')} className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"><Mail className="w-4 h-4" /> {t.contact}</button>
+            <a href="/about" className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors">
+            <Info className="w-4 h-4" /> {t.about}
+          </a>
+          <a href="/privacy" className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors">
+            <ShieldCheck className="w-4 h-4" /> {t.privacy}
+          </a>
+          <a href="/contact" className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors">
+            <Mail className="w-4 h-4" /> {t.contact}
+          </a>
               <a href="https://kyo-kan-design.com/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors"><ExternalLink className="w-4 h-4" /> {t.operator}</a>
             </nav>
           </div>
@@ -370,16 +380,16 @@ export default function App() {
 
       {/* コラム・ガイドへの導線 */}
       <section className="max-w-5xl mx-auto w-full mb-24 grid grid-cols-1 md:grid-cols-2 gap-6 px-4">
-        <button onClick={() => navigate('column')} className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-lg transition-all text-left">
-          <BookOpen className="w-6 h-6 mb-4" style={{ color: PRIMARY_COLOR }} />
-          <h3 className="font-black text-lg mb-2">{t.column}</h3>
-          <p className="text-sm text-slate-500 leading-relaxed">{t.columnIntro}</p>
-        </button>
-        <button onClick={() => navigate('guide')} className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-lg transition-all text-left">
-          <MousePointer2 className="w-6 h-6 mb-4" style={{ color: PRIMARY_COLOR }} />
-          <h3 className="font-black text-lg mb-2">{t.guide}</h3>
-          <p className="text-sm text-slate-500 leading-relaxed">{t.guideIntro}</p>
-        </button>
+      <a href="/column" className="block bg-white p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-lg transition-all text-left">
+        <BookOpen className="w-6 h-6 mb-4" style={{ color: PRIMARY_COLOR }} />
+        <h3 className="font-black text-lg mb-2">{t.column}</h3>
+        <p className="text-sm text-slate-500 leading-relaxed">{t.columnIntro}</p>
+      </a>
+      <a href="/guide" className="block bg-white p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-lg transition-all text-left">
+        <MousePointer2 className="w-6 h-6 mb-4" style={{ color: PRIMARY_COLOR }} />
+        <h3 className="font-black text-lg mb-2">{t.guide}</h3>
+        <p className="text-sm text-slate-500 leading-relaxed">{t.guideIntro}</p>
+      </a>
       </section>
 
             {/* トップページ説明コンテンツ */}
