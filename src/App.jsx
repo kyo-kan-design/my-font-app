@@ -460,34 +460,33 @@ export default function App() {
         </div>
 
         <div className="bg-white p-7 rounded-2xl border border-slate-100 shadow-sm">
-          <h2 className="text-2xl font-black tracking-tight text-slate-900 mb-5">
-            おすすめ記事
-          </h2>
+          <div className="flex items-center justify-between mb-5">
+            <h2 className="text-2xl font-black tracking-tight text-slate-900">
+              最新記事
+            </h2>
+
+            <a
+              href="/column"
+              className="text-sm font-bold text-slate-500 hover:text-slate-900"
+            >
+              もっと見る →
+            </a>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <a
-              href="/article/noto-sans-vs-serif"
-              className="text-sm font-bold text-slate-700 hover:underline"
-            >
-              Noto Sans JPとNoto Serif JPの使い分け完全ガイド
-            </a>
-            <a
-              href="/article/font-pairing-7-patterns"
-              className="text-sm font-bold text-slate-700 hover:underline"
-            >
-              失敗しないWebサイトのフォント組み合わせ7パターン
-            </a>
-            <a
-              href="/article/line-height-guide"
-              className="text-sm font-bold text-slate-700 hover:underline"
-            >
-              行間(line-height)1.5/1.7/2.0の違いと使いどころ
-            </a>
-            <a
-              href="/article/letter-spacing-japanese"
-              className="text-sm font-bold text-slate-700 hover:underline"
-            >
-              字間(letter-spacing)が日本語Webの可読性に与える影響
-            </a>
+            {articles
+              .slice()
+              .reverse()
+              .slice(0, 8)
+              .map((article) => (
+                <a
+                  key={article.slug}
+                  href={`/article/${article.slug}`}
+                  className="text-sm font-bold text-slate-700 hover:underline"
+                >
+                  {article.title}
+                </a>
+              ))}
           </div>
         </div>
       </section>
