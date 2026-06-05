@@ -402,5 +402,22 @@ Google Fontsの日本語フォントは「Dynamic Subsetting」という仕組�
 font-display: swap、Google Fonts経由のsubset、preconnectの3点セットを実装すれば、日本語Webフォントの体感速度はかなり改善されます。KumiFontで作ったCSSをサイトに組み込む際にも、必ずこの最適化をセットで適用してください。`
     }
   ]
+},
+
+{
+  slug: 'saas-font-selection',
+  title: 'SaaSで使いやすい日本語フォント5選',
+  description: 'SaaSや管理画面で読みやすい日本語フォントを紹介します。',
+  date: '2026-06-05',
+  sections: [
+    {
+      heading: 'なぜSaaSはフォント選びが重要なのか',
+      body: `本文...`
+    },
+    {
+      heading: 'おすすめフォント',
+      body: `本文...`
+    }
+  ]
 }
 ];
