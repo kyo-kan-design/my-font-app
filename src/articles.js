@@ -559,5 +559,106 @@ font-display: swap、Google Fonts経由のsubset、preconnectの3点セットを
       body: `管理画面では個性よりも読みやすさを優先してフォントを選びましょう。`
     }
   ]
+},
+
+{
+  slug: 'noto-sans-vs-mplus',
+  title: 'Noto Sans JPとM PLUS 1pの違い',
+  description: 'Noto Sans JPとM PLUS 1pを比較し、それぞれに向いている用途を解説します。',
+  date: '2026-06-05',
+  sections: [
+    {
+      heading: 'それぞれの特徴',
+      body: `Noto Sans JPは癖が少なく汎用性の高いフォントです。一方でM PLUS 1pはやや柔らかく親しみやすい印象があります。`
+    },
+    {
+      heading: '印象の違い',
+      body: `コーポレートサイトや管理画面ではNoto Sans JP、教育や地域サービスではM PLUS 1pが向いています。`
+    },
+    {
+      heading: 'UIで使うなら',
+      body: `どちらも使いやすいですが、情報量が多い画面ではNoto Sans JPの方が安定しやすい傾向があります。`
+    },
+    {
+      heading: 'まとめ',
+      body: `迷ったらNoto Sans JP、親しみやすさを重視するならM PLUS 1pがおすすめです。`
+    }
+  ]
+},
+
+{
+  slug: 'ecommerce-fonts',
+  title: 'ECサイトにおすすめのフォント',
+  description: 'ECサイトで信頼感や購入率に影響するフォント選びを解説します。',
+  date: '2026-06-05',
+  sections: [
+    {
+      heading: 'ECサイトでフォントが重要な理由',
+      body: `商品説明や価格情報を読みやすく表示することは、購入判断に大きく影響します。`
+    },
+    {
+      heading: '定番フォント',
+      body: `Noto Sans JPは可読性が高く、多くのECサイトで採用されています。`
+    },
+    {
+      heading: '高級商材向け',
+      body: `見出しに明朝体を使うことで、高級感や特別感を演出できます。`
+    },
+    {
+      heading: 'まとめ',
+      body: `ECサイトでは世界観と可読性のバランスを意識してフォントを選びましょう。`
+    }
+  ]
+},
+
+{
+  slug: 'real-estate-fonts',
+  title: '不動産サイト向けフォントの選び方',
+  description: '住宅・不動産サイトで信頼感を高めるフォント選びを解説します。',
+  date: '2026-06-05',
+  sections: [
+    {
+      heading: '不動産サイトで求められる印象',
+      body: `住宅購入は高額な意思決定です。そのため安心感や信頼感が重要になります。`
+    },
+    {
+      heading: 'ゴシック体と明朝体',
+      body: `本文はゴシック体、見出しは明朝体にすると信頼感と高級感を両立しやすくなります。`
+    },
+    {
+      heading: 'おすすめフォント',
+      body: `Noto Sans JPとNoto Serif JPの組み合わせは不動産サイトでも使いやすい構成です。`
+    },
+    {
+      heading: 'まとめ',
+      body: `読みやすさを確保しながら、落ち着いた印象を作ることが重要です。`
+    }
+  ]
+},
+
+{
+  slug: 'b2b-font-selection',
+  title: 'BtoBサイト向けフォントの選び方',
+  description: 'BtoBサービスやSaaSサイトで成果につながるフォント選びを解説します。',
+  date: '2026-06-05',
+  sections: [
+    {
+      heading: 'BtoBサイトに必要な印象',
+      body: `BtoBサイトでは信頼感、専門性、安定感が重要です。`
+    },
+    {
+      heading: 'おすすめフォント',
+      body: `Noto Sans JPやZen Kaku Gothic Newは、情報を整理して見せやすいフォントです。`
+    },
+    {
+      heading: 'よくある失敗',
+      body: `装飾性の高いフォントを使うと、信頼性よりもデザイン性が強く見えてしまうことがあります。`
+    },
+    {
+      heading: 'まとめ',
+      body: `BtoBサイトでは読みやすさと誠実さを優先したフォント選びがおすすめです。`
+    }
+  ]
 }
+
 ];
